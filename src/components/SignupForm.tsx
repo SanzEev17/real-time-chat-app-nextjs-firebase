@@ -3,20 +3,22 @@ import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { loginForm } from "@/types/userZod";
+import { signupForm } from "@/types/userZod";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import FormInput from "./FormInput";
 
-const LoginForm = () => {
-  const form = useForm<z.infer<typeof loginForm>>({
-    resolver: zodResolver(loginForm),
+const SignupForm = () => {
+  const form = useForm<z.infer<typeof signupForm>>({
+    resolver: zodResolver(signupForm),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
+      confirmPassword: "",
     },
   });
-  function onSubmit(values: z.infer<typeof loginForm>) {
+  function onSubmit(values: z.infer<typeof signupForm>) {
     console.log(values);
   }
   return (
@@ -25,6 +27,7 @@ const LoginForm = () => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-4"
       >
+        <FormInput control={form.control} name="name" placeholder="Full Name" />
         <FormInput
           control={form.control}
           name="email"
@@ -36,11 +39,18 @@ const LoginForm = () => {
           type="password"
           placeholder="Password"
         />
-        <Button variant="outline" className="w-fit" type="submit">
-          Login
+        <FormInput
+          control={form.control}
+          name="confirmPassword"
+          type="password"
+          placeholder="Confirm Password"
+        />
+        <Button className="w-fit" type="submit">
+          Signup
         </Button>
       </form>
     </Form>
   );
 };
-export default LoginForm;
+
+export default SignupForm;

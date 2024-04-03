@@ -2,7 +2,7 @@ import { z, ZodType } from "zod";
 import { LoginFormData, SignUpFormData } from ".";
 
 const loginForm: ZodType<LoginFormData> = z.object({
-  email: z.string().email(),
+  email: z.string().email().toLowerCase(),
   password: z.string().min(8, {
     message: "Password must be at least 8 characters.",
   }),

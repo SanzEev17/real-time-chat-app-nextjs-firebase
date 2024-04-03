@@ -7,11 +7,11 @@ interface LoginFormData {
 
 interface SignUpFormData extends LoginFormData {
   name: string;
-  confirmPassword: string;
+    confirmPassword: string;
 }
 
 interface FormInputData {
-  control: Control<LoginFormData | SignUpFormData>;
+  control: Control<any>;
   label?: string;
   name: "name" | "email" | "password" | "confirmPassword";
   type?: string;

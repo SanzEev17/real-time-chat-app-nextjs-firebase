@@ -1,4 +1,3 @@
-import LoginForm from "@/components/LoginForm";
 import React from "react";
 import {
   Card,
@@ -9,29 +8,30 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
+import SignupForm from "@/components/SignupForm";
 
-const LoginPage = () => {
+const SignUpPage = () => {
   return (
     <Card className="w-96">
       <CardHeader>
-        <CardTitle className="text-4xl lg:text-5xl font-bold">Login</CardTitle>
+        <CardTitle className="text-4xl lg:text-5xl font-bold">Sign Up</CardTitle>
         <CardDescription>
-          Sign in to continue chatting in real-time with friends and colleagues.
+          Join us to continue chatting in real-time with friends and colleagues.
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <LoginForm />
+        <SignupForm />
       </CardContent>
       <CardFooter>
         <Link
-          href="/account/signup"
+          href="/account/login"
           className="text-sm text-center w-full hover:text-blue-500"
         >
-          Don&apos;t have an account? Signup here
+          Already have an account? Login here
         </Link>
       </CardFooter>
     </Card>
-  );
-};
+  )
+}
 
-export default LoginPage;
+export default SignUpPage

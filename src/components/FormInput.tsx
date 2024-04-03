@@ -16,7 +16,7 @@ const FormInput = ({ control, label, name, type, placeholder }:FormInputData) =>
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel className="text-base">{label}</FormLabel>
+          {label && <FormLabel className="text-base">{label}</FormLabel>}
           <FormControl>
             <Input type={type} placeholder={placeholder} {...field} />
           </FormControl>
