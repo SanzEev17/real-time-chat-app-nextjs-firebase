@@ -11,7 +11,7 @@ const Hero = () => {
         <h1 className="py-2 text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-red-500 to-blue-500">
           Hang out anytime, anywhere
         </h1>
-        <div className="lg:w-2/3">
+        <div className="w-full lg:w-2/3">
           <LoginForm />
         </div>
       </div>

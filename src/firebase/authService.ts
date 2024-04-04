@@ -4,6 +4,8 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut,
+  onAuthStateChanged,
+  User,
 } from "firebase/auth";
 import { AuthData } from "@/types";
 
@@ -31,7 +33,14 @@ export class AuthService {
   }
   async loginUserWithEmail({ email, password }: AuthData) {
     try {
-      return signInWithEmailAndPassword(this.auth, email, password);
+      return await signInWithEmailAndPassword(this.auth, email, password);
+    } catch (error: any) {
+      throw error;
+    }
+  }
+  async getCurrentUser(callback: (user: User | null) => void) {
+    try {
+      return await onAuthStateChanged(this.auth, callback);
     } catch (error: any) {
       throw error;
     }

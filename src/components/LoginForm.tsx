@@ -29,8 +29,8 @@ const LoginForm = () => {
     setError("");
     try {
       setLoading(true);
-      await authService.loginUserWithEmail(data);
-      router.replace("/");
+      const userSession = await authService.loginUserWithEmail(data);
+      userSession && router.replace("/");
     } catch (error: any) {
       setError(error.message);
     } finally {
@@ -38,9 +38,7 @@ const LoginForm = () => {
     }
   };
 
-  return loading ? (
-    <div>Loading Form</div>
-  ) : error ? (
+  return error ? (
     <div>{error}</div>
   ) : (
     <Form {...form}>
@@ -60,7 +58,7 @@ const LoginForm = () => {
           placeholder="Password"
         />
         <Button variant="outline" className="w-fit" type="submit">
-          Login
+          {loading ? "Loading..." : "Login"}
         </Button>
       </form>
     </Form>
