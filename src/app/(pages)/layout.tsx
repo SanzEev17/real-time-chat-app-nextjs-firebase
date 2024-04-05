@@ -22,8 +22,8 @@ export default function PageLayout({
           } else {
             dispatch(logout());
           }
+          setLoading(false)
         })
-        .finally(() => setLoading(false));
     };
     getAuthState();
     return () => {
