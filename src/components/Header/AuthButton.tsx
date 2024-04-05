@@ -21,13 +21,13 @@ export default function AuthButton(): JSX.Element {
   };
   return currentUser ? (
     <div className="hidden md:flex gap-4">
-      <Button variant="outline" onClick={handleLogout}>
+      <Button variant="destructive" onClick={handleLogout}>
         Logout
       </Button>
     </div>
   ) : (
     <div className="flex gap-4">
-      <Button variant="outline" asChild>
+      <Button asChild>
         <Link href={`/account/signup`}>Signup</Link>
       </Button>
     </div>

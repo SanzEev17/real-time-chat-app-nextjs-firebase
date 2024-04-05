@@ -38,13 +38,11 @@ const LoginForm = () => {
     }
   };
 
-  return error ? (
-    <div>{error}</div>
-  ) : (
+  return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(loginUser)}
-        className="flex flex-col gap-4"
+        className="flex flex-col gap-4 bg-destructive-foreground"
       >
         <FormInput
           control={form.control}
@@ -57,10 +55,11 @@ const LoginForm = () => {
           type="password"
           placeholder="Password"
         />
-        <Button variant="outline" className="w-fit" type="submit">
+        <Button className="w-fit" type="submit">
           {loading ? "Loading..." : "Login"}
         </Button>
       </form>
+      {error && <div>{error}</div>}
     </Form>
   );
 };
