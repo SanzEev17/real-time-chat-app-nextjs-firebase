@@ -1,6 +1,7 @@
 import { Control } from "react-hook-form";
 
 interface AuthData {
+  name?:string;
   email: string;
   password: string;
 }

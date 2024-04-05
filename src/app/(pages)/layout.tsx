@@ -1,20 +1,39 @@
-"use client"
+"use client";
 import Header from "@/components/Header/Header";
 import authService from "@/firebase/authService";
-import { useEffect } from "react";
+import { login, logout } from "@/redux/features/authSlice";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 
 export default function PageLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  //TODO: Use redux to set global state for user data
-  // useEffect(()=>{
-  //   async function getUser() {
-  //     const currentUser = await authService.getCurrentUser();
-  //   }
-  //   getUser()
-  // }, [])
+  const [loading, setLoading] = useState<boolean>(true);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const getAuthState = async () => {
+      return await authService
+        .getCurrentUser((user) => {
+          if (user) {
+            const { uid, email, displayName } = user;
+            dispatch(login({ uid, email, displayName }));
+          } else {
+            dispatch(logout());
+          }
+        })
+        .finally(() => setLoading(false));
+    };
+    getAuthState();
+    return () => {
+      getAuthState();
+    };
+  }, [dispatch]);
+
+  if (loading) {
+    return null;
+  }
   return (
     <>
       <Header />

@@ -6,6 +6,7 @@ import {
   signOut,
   onAuthStateChanged,
   User,
+  updateProfile,
 } from "firebase/auth";
 import { AuthData } from "@/types";
 
@@ -15,14 +16,20 @@ export class AuthService {
     this.auth = getAuth(app);
   }
 
-  async createUserWithEmail({ email, password }: AuthData) {
+  async createUserWithEmail({ email, password, name }: AuthData) {
     try {
       const newUser = await createUserWithEmailAndPassword(
         this.auth,
         email,
         password
       );
+  
       if (newUser) {
+        await updateProfile(newUser.user, {
+          displayName: name
+        });
+  
+        // Login the user
         return this.loginUserWithEmail({ email, password });
       } else {
         return newUser;
@@ -31,6 +38,7 @@ export class AuthService {
       throw error;
     }
   }
+  
   async loginUserWithEmail({ email, password }: AuthData) {
     try {
       return await signInWithEmailAndPassword(this.auth, email, password);
