@@ -42,7 +42,7 @@ const LoginForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(loginUser)}
-        className="flex flex-col gap-4 bg-destructive-foreground"
+        className="flex flex-col gap-4"
       >
         <FormInput
           control={form.control}
