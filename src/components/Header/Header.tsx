@@ -1,11 +1,11 @@
 import React from "react";
-import { Button } from "../ui/button";
 import AuthButton from "./AuthButton";
+import Link from "next/link";
 
 const Header = () => {
   return (
     <div className="fixed w-full px-14 lg:px-36 py-4 flex justify-between items-center bg-accent shadow-md">
-      <h1 className="text-2xl font-bold">Guff Gaff</h1>
+      <Link href="/" className="text-2xl font-bold">Guff Gaff</Link>
       <AuthButton />
     </div>
   );
