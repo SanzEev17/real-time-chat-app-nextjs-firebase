@@ -15,5 +15,5 @@ export default function ProtectedLayout({
     router.replace("/account/login");
     return null;
   }
-  return { children };
+  return children;
 }

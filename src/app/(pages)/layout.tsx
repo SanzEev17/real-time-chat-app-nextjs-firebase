@@ -14,16 +14,15 @@ export default function PageLayout({
   const dispatch = useDispatch();
   useEffect(() => {
     const getAuthState = async () => {
-      return await authService
-        .getCurrentUser((user) => {
-          if (user) {
-            const { uid, email, displayName } = user;
-            dispatch(login({ uid, email, displayName }));
-          } else {
-            dispatch(logout());
-          }
-          setLoading(false)
-        })
+      return await authService.getCurrentUser((user) => {
+        if (user) {
+          const { uid, email, displayName } = user;
+          dispatch(login({ uid, email, displayName }));
+        } else {
+          dispatch(logout());
+        }
+        setLoading(false);
+      });
     };
     getAuthState();
     return () => {
@@ -35,9 +34,9 @@ export default function PageLayout({
     return null;
   }
   return (
-    <>
+    <main className="h-dvh flex flex-col">
       <Header />
       {children}
-    </>
+    </main>
   );
 }
