@@ -20,9 +20,9 @@ const Hero = () => {
           <Image
             src={heroImg}
             alt="Guff-Gaf"
-            layout=""
             quality={50}
-            sizes="(max-width: 768px) 100vw, (min-width: 768px) 50%"
+            priority
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="h-full w-full object-cover"
           />
         </AspectRatio>

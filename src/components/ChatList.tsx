@@ -6,7 +6,14 @@ const ChatList = () => {
   return (
     <div className="py-4 flex items-center gap-4">
       <div className="relative rounded-full overflow-hidden min-w-14 min-h-14">
-        <Image src={heroImg} alt="" layout="fill" quality={20} className="-z-10" />
+        <Image
+          src={heroImg}
+          alt=""
+          layout="fill"
+          quality={20}
+          sizes="(max-width: 1200px) 50vw, 33vw"
+          className="-z-10"
+        />
       </div>
       <div>
         <h1 className="font-bold text-base">Title</h1>
