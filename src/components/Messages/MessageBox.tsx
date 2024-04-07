@@ -1,9 +1,9 @@
 import React from "react";
-import { ScrollArea } from "./ui/scroll-area";
+import { ScrollArea } from "../ui/scroll-area";
 import MessageReceived from "./MessageReceived";
 import MessageSent from "./MessageSent";
 
-const MessageContainer = () => {
+const MessageBox = () => {
   return (
     <ScrollArea className="p-4 h-full overflow-y-auto">
       <MessageReceived />
@@ -16,4 +16,4 @@ const MessageContainer = () => {
   );
 };
 
-export default MessageContainer;
+export default MessageBox;
