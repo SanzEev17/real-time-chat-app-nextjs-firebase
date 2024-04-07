@@ -5,6 +5,7 @@ import Image from "next/image";
 import heroImg from "../../../../../public/images/hero.jpg";
 import MessageContainer from "@/components/MessageContainer";
 import ChatForm from "@/components/ChatForm";
+import FriendList from "@/components/FriendList";
 
 const DashboardPage = () => {
   return (
@@ -15,7 +16,7 @@ const DashboardPage = () => {
         </div>
         <ChatList />
       </ScrollArea>
-      <div className="border-x-2 h-full lg:col-span-2 flex flex-col flex-grow overflow-y-auto">
+      <div className="border-x-2 h-full lg:col-span-2 flex flex-col overflow-y-auto">
         <div className="py-2 shadow-lg w-full h-fit">
           <div className="px-4 flex gap-3">
             <div className="relative w-11 h-11 overflow-hidden rounded-full">
@@ -38,6 +39,7 @@ const DashboardPage = () => {
         <MessageContainer />
         <ChatForm />
       </div>
+      <FriendList/>
     </section>
   );
 };
