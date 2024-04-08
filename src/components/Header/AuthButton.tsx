@@ -2,23 +2,17 @@
 import React from "react";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import authService from "@/firebase/authService";
 import { useAppSelector } from "@/redux/store";
 import { DarkModeToggle } from "./DarkModeToggle";
+import LogoutBtn from "./LogoutBtn";
 
 export default function AuthButton(): JSX.Element {
   const isAuthenticated = useAppSelector(
     (state) => state.authReducer.isAuthenticated
   );
-  const handleLogout = async (): Promise<void> => {
-    await authService.logout();
-  };
   return isAuthenticated ? (
-    <div className="hidden md:flex gap-4">
-      <Button variant="destructive" onClick={handleLogout}>
-        Logout
-      </Button>
-      <DarkModeToggle />
+    <div className="hidden md:block">
+      <LogoutBtn />
     </div>
   ) : (
     <div className="flex gap-4">
