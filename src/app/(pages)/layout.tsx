@@ -4,6 +4,7 @@ import authService from "@/firebase/authService";
 import { login, logout } from "@/redux/features/authSlice";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import "../globals.css"
 
 export default function PageLayout({
   children,

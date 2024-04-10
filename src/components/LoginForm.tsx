@@ -30,7 +30,7 @@ const LoginForm = () => {
     try {
       setLoading(true);
       const userSession = await authService.loginUserWithEmail(data);
-      userSession && router.replace("/");
+      userSession && router.replace("/dashboard");
     } catch (error: any) {
       setError(error.message);
     } finally {
