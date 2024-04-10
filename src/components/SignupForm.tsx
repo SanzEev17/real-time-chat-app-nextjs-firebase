@@ -10,6 +10,7 @@ import FormInput from "./FormInput";
 import { useRouter } from "next/navigation";
 import { SignUpFormData } from "@/types";
 import authService from "@/firebase/authService";
+import FormSelect from "./FormSelect";
 
 const SignupForm = () => {
   const router = useRouter();
@@ -20,7 +21,10 @@ const SignupForm = () => {
     resolver: zodResolver(signupForm),
     defaultValues: {
       name: "",
+      username: "",
       email: "",
+      phoneNumber: "",
+      gender: "",
       password: "",
       confirmPassword: "",
     },
@@ -32,10 +36,9 @@ const SignupForm = () => {
     setError("");
     try {
       setLoading(true);
-      const newUser = await authService.createUserWithEmail(data);
-      if (newUser) {
-        router.replace("/account/login");
-      }
+      await authService
+        .createUserWithEmail(data)
+        .then(() => router.push("/dashboard"));
     } catch (error: any) {
       setError(error.message);
     } finally {
@@ -48,28 +51,55 @@ const SignupForm = () => {
         onSubmit={form.handleSubmit(createUser)}
         className="flex flex-col gap-4"
       >
-        <FormInput control={form.control} name="name" placeholder="Full Name" />
+        <div className="flex justify-center gap-4 items-center">
+          <FormInput
+            control={form.control}
+            name="name"
+            placeholder="Full Name"
+          />
+          <FormInput
+            control={form.control}
+            name="username"
+            placeholder="Username"
+          />
+        </div>
         <FormInput
           control={form.control}
           name="email"
           placeholder="Email Address"
         />
-        <FormInput
-          control={form.control}
-          name="password"
-          type="password"
-          placeholder="Password"
-        />
-        <FormInput
-          control={form.control}
-          name="confirmPassword"
-          type="password"
-          placeholder="Confirm Password"
-        />
+        <div className="flex justify-center gap-4 items-center">
+          <FormInput
+            control={form.control}
+            name="phoneNumber"
+            placeholder="Phone Number"
+          />
+          <FormSelect
+            control={form.control}
+            name="gender"
+            placeholder="Gender"
+            selectData={["Male", "Female", "Others"]}
+          />
+        </div>
+        <div className="flex justify-center gap-4 items-center">
+          <FormInput
+            control={form.control}
+            name="password"
+            type="password"
+            placeholder="Password"
+          />
+          <FormInput
+            control={form.control}
+            name="confirmPassword"
+            type="password"
+            placeholder="Confirm Password"
+          />
+        </div>
         <Button className="w-fit" type="submit">
-          Signup
+          {loading ? "Loading..." : "Signup"}
         </Button>
       </form>
+      {error && <div>{error}</div>}
     </Form>
   );
 };

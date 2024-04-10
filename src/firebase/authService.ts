@@ -8,38 +8,50 @@ import {
   User,
   updateProfile,
 } from "firebase/auth";
-import { AuthData } from "@/types";
+import { doc, getFirestore, setDoc } from "firebase/firestore";
+import { getStorage, ref } from "firebase/storage";
+import { LoginFormData, SignUpFormData } from "@/types";
 
 export class AuthService {
   auth;
+  db;
+  storage;
   constructor() {
     this.auth = getAuth(app);
+    this.db = getFirestore(app);
+    this.storage = getStorage(app);
   }
 
-  async createUserWithEmail({ email, password, name }: AuthData) {
+  async createUserWithEmail({
+    name,
+    username,
+    email,
+    phoneNumber,
+    gender,
+    password,
+  }: SignUpFormData) {
     try {
-      const newUser = await createUserWithEmailAndPassword(
-        this.auth,
-        email,
-        password
+      await createUserWithEmailAndPassword(this.auth, email, password).then(
+        (data) => {
+          updateProfile(data.user, {
+            displayName: username,
+          });
+          setDoc(doc(this.db, "users", data.user.uid), {
+            uid: data.user.uid,
+            name,
+            username,
+            email,
+            phoneNumber,
+            gender,
+          });
+        }
       );
-  
-      if (newUser) {
-        await updateProfile(newUser.user, {
-          displayName: name
-        });
-  
-        // Login the user
-        return this.loginUserWithEmail({ email, password });
-      } else {
-        return newUser;
-      }
     } catch (error: any) {
       throw error;
     }
   }
-  
-  async loginUserWithEmail({ email, password }: AuthData) {
+
+  async loginUserWithEmail({ email, password }: LoginFormData) {
     try {
       return await signInWithEmailAndPassword(this.auth, email, password);
     } catch (error: any) {

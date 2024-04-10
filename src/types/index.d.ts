@@ -1,7 +1,6 @@
 import { Control } from "react-hook-form";
 
 interface AuthData {
-  name?:string;
   email: string;
   password: string;
 }
@@ -9,15 +8,32 @@ interface LoginFormData extends AuthData {}
 
 interface SignUpFormData extends LoginFormData {
   name: string;
+  username: string;
+  phoneNumber: string;
+  gender: string;
   confirmPassword: string;
 }
 
-interface FormInputData {
+interface FormData {
   control: Control<any>;
   label?: string;
-  name: "name" | "email" | "password" | "confirmPassword";
+  name: string;
   type?: string;
   placeholder?: string;
+  className?: string;
+}
+interface FormInputData extends FormData {
+  type?: string;
 }
 
-export { AuthData, LoginFormData, SignUpFormData, FormInputData };
+interface FormSelectData extends FormData {
+  selectData: string[];
+}
+
+export {
+  AuthData,
+  LoginFormData,
+  SignUpFormData,
+  FormInputData,
+  FormSelectData,
+};

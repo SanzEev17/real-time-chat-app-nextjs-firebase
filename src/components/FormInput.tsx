@@ -9,16 +9,30 @@ import {
 import { Input } from "./ui/input";
 import { FormInputData } from "@/types";
 
-const FormInput = ({ control, label, name, type, placeholder }:FormInputData) => {
+const FormInput = ({
+  control,
+  label,
+  name,
+  type,
+  placeholder,
+  className,
+  ...props
+}: FormInputData) => {
   return (
     <FormField
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem>
+        <FormItem className="w-full">
           {label && <FormLabel className="text-base">{label}</FormLabel>}
-          <FormControl>
-            <Input type={type} placeholder={placeholder} {...field} />
+          <FormControl className="w-full">
+            <Input
+              type={type}
+              placeholder={placeholder}
+              className={className}
+              {...props}
+              {...field}
+            />
           </FormControl>
           <FormMessage />
         </FormItem>

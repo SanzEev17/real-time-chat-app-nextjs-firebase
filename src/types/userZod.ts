@@ -1,4 +1,4 @@
-import { z, ZodType } from "zod";
+import { number, z, ZodType } from "zod";
 import { LoginFormData, SignUpFormData } from ".";
 
 const loginForm: ZodType<LoginFormData> = z.object({
@@ -11,7 +11,12 @@ const loginForm: ZodType<LoginFormData> = z.object({
 const signupForm: ZodType<SignUpFormData> = z
   .object({
     name: z.string().trim().min(4),
+    username: z.string().trim().min(4).toLowerCase(),
     email: z.string().email().trim().toLowerCase(),
+    phoneNumber: z
+      .string()
+      .refine((value) => /^[+]{1}(?:[0-9-()/.]\s?){6,15}[0-9]{1}$/.test(value)),
+    gender: z.string().trim().toLowerCase(),
     password: z.string().trim().min(8, {
       message: "Password must be at least 8 characters.",
     }),

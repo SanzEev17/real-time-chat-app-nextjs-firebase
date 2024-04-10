@@ -12,7 +12,7 @@ import SignupForm from "@/components/SignupForm";
 
 const SignUpPage = () => {
   return (
-    <Card className="w-96">
+    <Card className="min-w-96">
       <CardHeader>
         <CardTitle className="text-4xl lg:text-5xl font-bold">Sign Up</CardTitle>
         <CardDescription>

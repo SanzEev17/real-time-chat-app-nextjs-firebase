@@ -30,9 +30,9 @@ const ProfileCard = () => {
         </div>
         <div className="flex flex-col gap-4">
           <CardTitle className="text-3xl font-bold">Name</CardTitle>
-          <CardDescription>
-            <div>Works in</div>
-            <div>Date of birth</div>
+          <CardDescription className="flex flex-col gap-1">
+            <span>Works in</span>
+            <span>Date of birth</span>
           </CardDescription>
         </div>
       </CardHeader>
