@@ -8,12 +8,12 @@ import {
   FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
-import { FormInputData } from "@/types";
+import { FormImageData } from "@/types";
 import { AspectRatio } from "./ui/aspect-ratio";
 import { ImageUp } from "lucide-react";
 import Image from "next/image";
 
-const FormImage = ({ control, name, className, ...props }: FormInputData) => {
+const FormImage = ({ control, name, className, ...props }: FormImageData) => {
   const [selectedImage, setSelectedImage] = useState<File>();
   const [imagePreview, setImagePreview] = useState<string | undefined>();
   useEffect(() => {

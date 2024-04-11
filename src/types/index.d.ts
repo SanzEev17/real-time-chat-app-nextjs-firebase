@@ -19,7 +19,6 @@ interface FormData {
   control: Control<any>;
   label?: string;
   name: string;
-  type?: string;
   placeholder?: string;
   className?: string;
 }
@@ -30,6 +29,7 @@ interface FormInputData extends FormData {
 interface FormSelectData extends FormData {
   selectData: string[];
 }
+interface FormImageData extends FormData {}
 
 export {
   AuthData,
@@ -37,4 +37,5 @@ export {
   SignUpFormData,
   FormInputData,
   FormSelectData,
+  FormImageData,
 };
