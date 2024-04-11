@@ -8,14 +8,8 @@ import {
   User,
   updateProfile,
 } from "firebase/auth";
-import { doc, getFirestore, setDoc } from "firebase/firestore";
-import {
-  getDownloadURL,
-  getStorage,
-  ref,
-  uploadBytes,
-  uploadBytesResumable,
-} from "firebase/storage";
+import { doc, getFirestore, setDoc, getDoc } from "firebase/firestore";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { LoginFormData, SignUpFormData } from "@/types";
 import { v4 as uuidv4 } from "uuid";
 
@@ -92,11 +86,25 @@ export class AuthService {
       throw error;
     }
   }
+
   async logout() {
     try {
       return await signOut(this.auth);
     } catch (error: any) {
       console.log("logout error: ", error);
+    }
+  }
+
+  async getUserData(uid) {
+    try {
+      const docRef = doc(this.db, "users", uid);
+      const docSnap = await getDoc(docRef);
+      
+      if (docSnap.exists()) {
+        return docSnap.data();
+      }
+    } catch (error: any) {
+      console.log("Failed to get user data", error);
     }
   }
 }
