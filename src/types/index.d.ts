@@ -11,6 +11,7 @@ interface SignUpFormData extends LoginFormData {
   username: string;
   phoneNumber: string;
   gender: string;
+  profileImage: File;
   confirmPassword: string;
 }
 

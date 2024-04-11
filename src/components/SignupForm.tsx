@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { SignUpFormData } from "@/types";
 import authService from "@/firebase/authService";
 import FormSelect from "./FormSelect";
+import FormImage from "./FormImage";
 
 const SignupForm = () => {
   const router = useRouter();
@@ -24,6 +25,7 @@ const SignupForm = () => {
       username: "",
       email: "",
       phoneNumber: "",
+      profileImage: new File([], ""),
       gender: "",
       password: "",
       confirmPassword: "",
@@ -51,17 +53,20 @@ const SignupForm = () => {
         onSubmit={form.handleSubmit(createUser)}
         className="flex flex-col gap-4"
       >
-        <div className="flex justify-center gap-4 items-center">
-          <FormInput
-            control={form.control}
-            name="name"
-            placeholder="Full Name"
-          />
-          <FormInput
-            control={form.control}
-            name="username"
-            placeholder="Username"
-          />
+        <div className="flex justify-center gap-4">
+          <FormImage control={form.control} name="profileImage" />
+          <div className="w-full flex flex-col justify-center gap-4 items-center">
+            <FormInput
+              control={form.control}
+              name="name"
+              placeholder="Full Name"
+            />
+            <FormInput
+              control={form.control}
+              name="username"
+              placeholder="Username"
+            />
+          </div>
         </div>
         <FormInput
           control={form.control}

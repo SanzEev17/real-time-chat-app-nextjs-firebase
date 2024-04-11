@@ -9,8 +9,15 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
-import { getStorage, ref } from "firebase/storage";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytes,
+  uploadBytesResumable,
+} from "firebase/storage";
 import { LoginFormData, SignUpFormData } from "@/types";
+import { v4 as uuidv4 } from "uuid";
 
 export class AuthService {
   auth;
@@ -29,23 +36,43 @@ export class AuthService {
     phoneNumber,
     gender,
     password,
+    profileImage,
   }: SignUpFormData) {
     try {
-      await createUserWithEmailAndPassword(this.auth, email, password).then(
-        (data) => {
-          updateProfile(data.user, {
-            displayName: username,
-          });
-          setDoc(doc(this.db, "users", data.user.uid), {
-            uid: data.user.uid,
-            name,
-            username,
-            email,
-            phoneNumber,
-            gender,
-          });
-        }
+      const userData = await createUserWithEmailAndPassword(
+        this.auth,
+        email,
+        password
       );
+
+      //* Reference for storage in firestore
+      const storageRef = ref(
+        this.storage,
+        `profileImages/${username}/${uuidv4()}`
+      );
+
+      //* Upload the image
+      const snapshot = await uploadBytes(storageRef, profileImage);
+
+      //* Get the download URL of the uploaded image
+      const downloadURL = await getDownloadURL(snapshot.ref);
+
+      //* Update user profile with username and photoURL
+      await updateProfile(userData.user, {
+        displayName: username,
+        photoURL: downloadURL,
+      });
+
+      //* Creates a document to store all info about user
+      setDoc(doc(this.db, "users", userData.user.uid), {
+        uid: userData.user.uid,
+        name,
+        username,
+        email,
+        phoneNumber,
+        gender,
+        photoUrl: downloadURL,
+      });
     } catch (error: any) {
       throw error;
     }
