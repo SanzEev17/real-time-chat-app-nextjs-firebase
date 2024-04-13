@@ -11,7 +11,7 @@ import {
 import { doc, getFirestore, setDoc, getDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { LoginFormData, SignUpFormData } from "@/types";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuid } from "uuid";
 
 export class AuthService {
   auth;
@@ -42,7 +42,7 @@ export class AuthService {
       //* Reference for storage in firestore
       const storageRef = ref(
         this.storage,
-        `profileImages/${username}/${uuidv4()}`
+        `profileImages/${username}/${uuid()}`
       );
 
       //* Upload the image
@@ -95,18 +95,7 @@ export class AuthService {
     }
   }
 
-  async getUserData(uid) {
-    try {
-      const docRef = doc(this.db, "users", uid);
-      const docSnap = await getDoc(docRef);
-      
-      if (docSnap.exists()) {
-        return docSnap.data();
-      }
-    } catch (error: any) {
-      console.log("Failed to get user data", error);
-    }
-  }
+  
 }
 
 const authService = new AuthService();

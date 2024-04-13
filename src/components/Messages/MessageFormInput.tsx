@@ -17,7 +17,7 @@ const MessageFormInput = () => {
           size="icon"
           className="absolute top-0 right-3 rounded-full hover:text-primary"
           onClick={() => {
-            console.log("abc");
+            
           }}
         >
           <SendHorizonal />

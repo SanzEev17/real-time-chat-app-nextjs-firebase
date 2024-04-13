@@ -1,8 +1,9 @@
+import { UserData } from "@/types";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isAuthenticated: false,
-  userData: null,
+  userData: null as UserData | null,
 };
 
 const authSlice = createSlice({

@@ -11,11 +11,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import authService from "@/firebase/authService";
 import { DocumentData } from "firebase/firestore";
+import { useAppSelector } from "@/redux/store";
+import userService from "@/firebase/userService";
 
-const ProfileCard = ({ uid }: { uid?: string }) => {
+const ProfileCard = ({ uid }: { uid: string }) => {
   //TODO: Replace uid with username and make username unique
+
+  const currentUserId = useAppSelector(
+    (state) => state.authReducer.userData?.uid
+  );
   const [profileData, setProfileData] = useState<DocumentData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
@@ -24,7 +29,7 @@ const ProfileCard = ({ uid }: { uid?: string }) => {
     async function getUser() {
       try {
         setLoading(true);
-        const data = await authService.getUserData(uid);
+        const data = await userService.getUserData(uid);
         data && setProfileData(data);
       } catch (error) {
         console.error("Error fetching blog post:", error);
@@ -35,14 +40,13 @@ const ProfileCard = ({ uid }: { uid?: string }) => {
     }
     getUser();
   }, [uid]);
-  // console.log(profileData.photoUrl);
 
-  return loading || !profileData ? (
-    <div>Loading...</div>
-  ) : error ? (
+  return error ? (
     <div>Error: {error}</div>
+  ) : loading || !profileData ? (
+    <div>Loading...</div>
   ) : (
-    <Card className="w-96">
+    <Card className="min-w-96">
       <CardHeader className="flex flex-row items-center gap-5">
         {/* Profile Image  */}
         <div className="w-full md:w-40 rounded-xl overflow-hidden relative">
@@ -69,11 +73,14 @@ const ProfileCard = ({ uid }: { uid?: string }) => {
       <CardContent>
         <p>Bio</p>
       </CardContent>
-      <CardFooter className="flex gap-3 justify-center items-center">
-        <Button>Add Friend</Button>
-        <Button variant="destructive">Unfriend</Button>
-        <Button>Message</Button>
-      </CardFooter>
+      {/* Do not render render if viewer is the user itself */}
+      {currentUserId !== profileData.uid && (
+        <CardFooter className="flex gap-3 justify-center items-center">
+          <Button>Add Friend</Button>
+          <Button variant="destructive">Unfriend</Button>
+          <Button>Message</Button>
+        </CardFooter>
+      )}
     </Card>
   );
 };

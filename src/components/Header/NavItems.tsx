@@ -19,8 +19,9 @@ const NavItems = () => {
   const isAuthenticated = useAppSelector(
     (state) => state.authReducer.isAuthenticated
   );
+  const userId = useAppSelector((state) => state.authReducer.userData?.uid);
   const navItems = [
-    { title: "My Profile", slug: "profile" },
+    { title: "My Profile", slug: `profile/${userId}` },
     { title: "Add Friends", slug: "friends/add" },
     { title: "Friend Requests", slug: "friends/requests" },
   ];

@@ -31,6 +31,16 @@ interface FormSelectData extends FormData {
 }
 interface FormImageData extends FormData {}
 
+interface UserData {
+  uid: string;
+  name: string;
+  username: string;
+  email: string;
+  phoneNumber: string;
+  gender: string;
+  photoUrl: string;
+}
+
 export {
   AuthData,
   LoginFormData,
@@ -38,4 +48,5 @@ export {
   FormInputData,
   FormSelectData,
   FormImageData,
+  UserData
 };
