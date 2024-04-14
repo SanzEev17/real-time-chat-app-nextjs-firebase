@@ -23,25 +23,29 @@ const AddFriendsPage = () => {
         <h1 className="text-3xl font-bold">Add Friends</h1>
       </div>
       <div className="grid grid-cols-4 gap-6">
-        {allUsers
-          .filter((requestFriendData) => {
-            // Filter out users who have already sent friend requests to the current user
-            return !receivedFriendRequests.some(
-              (data) => data.uid === requestFriendData.uid
-            );
-          })
-          .map((requestFriendData) => (
-            <FriendCard
-              key={requestFriendData.uid}
-              requestFriendData={requestFriendData}
-            >
-              <Button
-                currentUserId={userData.uid}
+        {allUsers.length > 0 ? (
+          allUsers
+            .filter((requestFriendData) => {
+              //* Filter out users who have already sent friend requests to the current user
+              return !receivedFriendRequests.some(
+                (data) => data.uid === requestFriendData.uid
+              );
+            })
+            .map((requestFriendData) => (
+              <FriendCard
+                key={requestFriendData.uid}
                 requestFriendData={requestFriendData}
-                sentRequests={sentFriendRequests}
-              />
-            </FriendCard>
-          ))}
+              >
+                <Button
+                  currentUserId={userData.uid}
+                  requestFriendData={requestFriendData}
+                  sentRequests={sentFriendRequests}
+                />
+              </FriendCard>
+            ))
+        ) : (
+          <div>No other users to add friend...</div>
+        )}
       </div>
     </div>
   );

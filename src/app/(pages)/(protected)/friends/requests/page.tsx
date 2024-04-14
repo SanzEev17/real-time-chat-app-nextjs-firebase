@@ -17,17 +17,24 @@ const FriendRequestsPage = () => {
         <h1 className="text-3xl font-bold">Friend Requests</h1>
       </div>
       <div className="grid grid-cols-4 gap-6">
-        {receivedFriendRequests.map((requestFriendData) => (
-          <FriendCard
-            key={requestFriendData.uid}
-            requestFriendData={requestFriendData}
-          >
-            <Button
-              currentUserId={userData.uid}
-              requestFriendData={requestFriendData}
-            />
-          </FriendCard>
-        ))}
+        {
+          //* Check if there are any friend requests
+          receivedFriendRequests.length > 0 ? (
+            receivedFriendRequests.map((requestFriendData) => (
+              <FriendCard
+                key={requestFriendData.uid}
+                requestFriendData={requestFriendData}
+              >
+                <Button
+                  currentUserId={userData.uid}
+                  requestFriendData={requestFriendData}
+                />
+              </FriendCard>
+            ))
+          ) : (
+            <div>No friend requests...</div>
+          )
+        }
       </div>
     </div>
   );

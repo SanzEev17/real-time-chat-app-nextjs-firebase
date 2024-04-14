@@ -41,11 +41,17 @@ const SenderFriendRequestButton = ({
   };
 
   return isRequestSent ? (
-    <Button variant="destructive" onClick={deleteFriendRequest}>
+    <Button
+      variant="destructive"
+      onClick={deleteFriendRequest}
+      className="w-full"
+    >
       Cancel
     </Button>
   ) : (
-    <Button onClick={sendFriendRequest}>Add Friend</Button>
+    <Button onClick={sendFriendRequest} className="w-full">
+      Add Friend
+    </Button>
   );
 };
 

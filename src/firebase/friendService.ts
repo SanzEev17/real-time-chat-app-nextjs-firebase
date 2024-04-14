@@ -1,11 +1,9 @@
 import { app } from "./config";
 import {
   DocumentData,
-  addDoc,
   collection,
   deleteDoc,
   doc,
-  getDoc,
   getDocs,
   getFirestore,
   query,
@@ -20,12 +18,30 @@ export class FriendService {
   constructor() {
     this.db = getFirestore(app);
   }
-  async getAddFriendList(uid: string) {
-    const q = query(collection(this.db, "users"), where("uid", "!=", uid));
-    const allUsersSnapshot = await getDocs(q);
-    return allUsersSnapshot.docs.map((data) => ({
+
+  async getFriendsList(uid: string) {
+    const allFriendsSnap = await getDocs(
+      collection(this.db, "friendData", uid, "friends")
+    );
+    return allFriendsSnap.docs.map((data) => ({
       ...data.data(),
     })) as UserData[];
+  }
+
+  async getAddFriendList(uid: string) {
+    const allFriends = await this.getFriendsList(uid);
+    const q = query(collection(this.db, "users"), where("uid", "!=", uid));
+    const allUsersSnapshot = await getDocs(q);
+
+    return allUsersSnapshot.docs
+      .filter((user) => {
+        
+        //* Filter out if user is in friend's list
+        return !allFriends.some((friend) => friend.uid === user.data().uid);
+      })
+      .map((user) => ({
+        ...user.data(),
+      })) as UserData[];
   }
 
   async sendFriendRequest({
@@ -102,7 +118,7 @@ export class FriendService {
   }) {
     try {
       const createFriendDoc = async (friend1: string, friend2: string) => {
-        await userService.getUserData(acceptedOf).then(async (data) => {
+        await userService.getUserData(friend2).then(async (data) => {
           if (data) {
             await setDoc(
               doc(this.db, "friendData", friend1, "friends", friend2),
