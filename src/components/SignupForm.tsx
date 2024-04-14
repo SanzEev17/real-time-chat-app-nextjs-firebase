@@ -6,12 +6,12 @@ import { z } from "zod";
 import { signupForm } from "@/types/userZod";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import FormInput from "./FormInput";
+import FormInput from "./FormElements/FormInput";
 import { useRouter } from "next/navigation";
 import { SignUpFormData } from "@/types";
 import authService from "@/firebase/authService";
-import FormSelect from "./FormSelect";
-import FormImage from "./FormImage";
+import FormSelect from "./FormElements/FormSelect";
+import FormImage from "./FormElements/FormImage";
 
 const SignupForm = () => {
   const router = useRouter();

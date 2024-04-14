@@ -6,10 +6,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "./ui/form";
-import { Input } from "./ui/input";
+} from "../ui/form";
+import { Input } from "../ui/input";
 import { FormImageData } from "@/types";
-import { AspectRatio } from "./ui/aspect-ratio";
+import { AspectRatio } from "../ui/aspect-ratio";
 import { ImageUp } from "lucide-react";
 import Image from "next/image";
 

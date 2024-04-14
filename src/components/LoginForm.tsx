@@ -6,7 +6,7 @@ import { z } from "zod";
 import { loginForm } from "@/types/userZod";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import FormInput from "./FormInput";
+import FormInput from "./FormElements/FormInput";
 import { LoginFormData } from "@/types";
 import authService from "@/firebase/authService";
 import { useRouter } from "next/navigation";

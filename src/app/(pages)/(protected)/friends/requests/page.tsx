@@ -1,11 +1,11 @@
 "use client";
-import FriendCard from "@/components/FriendCard";
+import FriendCard from "@/components/FriendRequest/FriendCard";
+import { ReceiverFriendRequestButton as Button } from "@/components/FriendRequest/ReceiverFriendRequestButton";
 import { useFriendRequest } from "@/hooks/useFriendRequest";
 import React from "react";
 
 const FriendRequestsPage = () => {
-  const { loading, userData, receivedFriendRequests } =
-    useFriendRequest();
+  const { loading, userData, receivedFriendRequests } = useFriendRequest();
 
   return loading ? (
     <div>Loading...</div>
@@ -20,9 +20,13 @@ const FriendRequestsPage = () => {
         {receivedFriendRequests.map((requestFriendData) => (
           <FriendCard
             key={requestFriendData.uid}
-            currentUserId={userData.uid}
             requestFriendData={requestFriendData}
-          />
+          >
+            <Button
+              currentUserId={userData.uid}
+              requestFriendData={requestFriendData}
+            />
+          </FriendCard>
         ))}
       </div>
     </div>

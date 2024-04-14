@@ -1,5 +1,6 @@
 "use client";
-import FriendCard from "@/components/FriendCard";
+import FriendCard from "@/components/FriendRequest/FriendCard";
+import { SenderFriendRequestButton as Button } from "@/components/FriendRequest/SenderFriendRequestButton";
 import { useFriendRequest } from "@/hooks/useFriendRequest";
 import React from "react";
 
@@ -32,10 +33,14 @@ const AddFriendsPage = () => {
           .map((requestFriendData) => (
             <FriendCard
               key={requestFriendData.uid}
-              currentUserId={userData.uid}
               requestFriendData={requestFriendData}
-              sentRequests={sentFriendRequests}
-            />
+            >
+              <Button
+                currentUserId={userData.uid}
+                requestFriendData={requestFriendData}
+                sentRequests={sentFriendRequests}
+              />
+            </FriendCard>
           ))}
       </div>
     </div>
