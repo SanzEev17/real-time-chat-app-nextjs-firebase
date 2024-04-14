@@ -99,13 +99,29 @@ export class FriendService {
     }
   }
 
-  async sentRequests(senderId: string) {
+  async getSentRequests(senderId: string) {
     try {
       const collectionRef = collection(
         this.db,
         "friendRequests",
         senderId,
         "sentRequests"
+      );
+      const collectionSnap = await getDocs(collectionRef);
+      return collectionSnap.docs.map((data) => ({
+        ...data.data(),
+      })) as UserData[];
+    } catch (error: any) {
+      console.log(error);
+    }
+  }
+  async getReceivedRequests(receiverId: string) {
+    try {
+      const collectionRef = collection(
+        this.db,
+        "friendRequests",
+        receiverId,
+        "receivedRequests"
       );
       const collectionSnap = await getDocs(collectionRef);
       return collectionSnap.docs.map((data) => ({

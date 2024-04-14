@@ -15,23 +15,26 @@ import friendService from "@/firebase/friendService";
 
 const FriendCard = ({
   requestFriendData,
-  sentFriendRequests,
+  sentRequests,
   currentUserId,
 }: {
   requestFriendData: UserData;
-  sentFriendRequests: UserData[];
+  sentRequests?: UserData[];
   currentUserId: string;
 }) => {
   const [isRequestSent, setIsRequestSent] = useState(false);
+
   //* Check if the key of object i.e. uid is equal to the requestFriendData uid
   useEffect(() => {
-    sentFriendRequests.map((friendRequest: UserData) => {
-      friendRequest.uid === requestFriendData.uid && setIsRequestSent(true);
-    });
-  }, [sentFriendRequests, requestFriendData.uid]);
+    if (sentRequests) {
+      sentRequests.map((friendRequest: UserData) => {
+        friendRequest.uid === requestFriendData.uid && setIsRequestSent(true);
+      });
+    }
+  }, [sentRequests, requestFriendData.uid]);
 
   //* Handler to send friend request
-  const addFriend = async () => {
+  const sendFriendRequest = async () => {
     await friendService.sendFriendRequest({
       senderId: currentUserId,
       receiverId: requestFriendData.uid,
@@ -74,7 +77,7 @@ const FriendCard = ({
             Cancel
           </Button>
         ) : (
-          <Button onClick={addFriend}>Add Friend</Button>
+          <Button onClick={sendFriendRequest}>Add Friend</Button>
         )}
       </CardFooter>
     </Card>
