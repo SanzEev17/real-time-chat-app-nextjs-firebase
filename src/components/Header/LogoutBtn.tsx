@@ -7,7 +7,9 @@ import { useRouter } from "next/navigation";
 const LogoutBtn = () => {
   const router = useRouter();
   const handleLogout = async (): Promise<void> => {
-    await authService.logout();
+    await authService.logout().then(() => {
+      router.push("/");
+    });
   };
   return (
     <div className="flex gap-4">

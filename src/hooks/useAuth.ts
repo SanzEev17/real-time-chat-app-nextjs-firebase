@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import authService from "@/firebase/authService";
-import userService from "@/firebase/userService";
 import { login, logout } from "@/redux/features/authSlice";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "@/redux/store";
@@ -16,8 +15,8 @@ export function useAuth() {
     const getAuthState = async () => {
       return await authService.getCurrentUser(async (user) => {
         if (user) {
-          const userData = await userService.getUserData(user.uid);
-          dispatch(login(userData));
+          const { uid, displayName, email, photoURL} = user
+          dispatch(login({uid, username:displayName, email, photoURL}));
         } else {
           dispatch(logout());
         }

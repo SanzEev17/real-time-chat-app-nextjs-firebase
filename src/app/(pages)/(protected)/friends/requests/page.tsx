@@ -4,7 +4,7 @@ import { useFriendRequest } from "@/hooks/useFriendRequest";
 import React from "react";
 
 const FriendRequestsPage = () => {
-  const { loading, userData, receivedFriendRequests, sentFriendRequests } =
+  const { loading, userData, receivedFriendRequests } =
     useFriendRequest();
 
   return loading ? (

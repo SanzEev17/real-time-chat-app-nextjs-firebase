@@ -58,7 +58,7 @@ const FriendCard = ({
           <Link href="">
             <AspectRatio ratio={1 / 1}>
               <Image
-                src={requestFriendData.photoUrl}
+                src={requestFriendData.photoURL}
                 alt={requestFriendData.name}
                 fill
                 sizes="(max-width: 768px) 100vw, (min-width: 768px) 20rem"

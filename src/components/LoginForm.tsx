@@ -10,9 +10,12 @@ import FormInput from "./FormInput";
 import { LoginFormData } from "@/types";
 import authService from "@/firebase/authService";
 import { useRouter } from "next/navigation";
+import { login } from "@/redux/features/authSlice";
+import { useDispatch } from "react-redux";
 
 const LoginForm = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const form = useForm<z.infer<typeof loginForm>>({
@@ -30,7 +33,11 @@ const LoginForm = () => {
     try {
       setLoading(true);
       const userSession = await authService.loginUserWithEmail(data);
-      userSession && router.replace("/dashboard");
+      if (userSession) {
+        const { uid, displayName, email, photoURL } = userSession.user;
+        dispatch(login({ uid, username: displayName, email, photoURL }));
+        router.replace("/dashboard");
+      }
     } catch (error: any) {
       setError(error.message);
     } finally {

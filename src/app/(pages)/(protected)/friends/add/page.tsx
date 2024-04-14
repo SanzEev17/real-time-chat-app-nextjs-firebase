@@ -22,19 +22,21 @@ const AddFriendsPage = () => {
         <h1 className="text-3xl font-bold">Add Friends</h1>
       </div>
       <div className="grid grid-cols-4 gap-6">
-        {allUsers.map((requestFriendData) => {
-          return receivedFriendRequests.map(
-            (data) =>
-              data.uid !== requestFriendData.uid && (
-                <FriendCard
-                  key={requestFriendData.uid}
-                  currentUserId={userData.uid}
-                  requestFriendData={requestFriendData}
-                  sentRequests={sentFriendRequests}
-                />
-              )
-          );
-        })}
+        {allUsers
+          .filter((requestFriendData) => {
+            // Filter out users who have already sent friend requests to the current user
+            return !receivedFriendRequests.some(
+              (data) => data.uid === requestFriendData.uid
+            );
+          })
+          .map((requestFriendData) => (
+            <FriendCard
+              key={requestFriendData.uid}
+              currentUserId={userData.uid}
+              requestFriendData={requestFriendData}
+              sentRequests={sentFriendRequests}
+            />
+          ))}
       </div>
     </div>
   );

@@ -44,7 +44,7 @@ export class FriendService {
           email: data.email,
           phoneNumber: data.phoneNumber,
           gender: data.gender,
-          photoUrl: data.photoUrl,
+          photoURL: data.photoURL,
         } as UserData;
       };
       await userService.getUserData(receiverId).then(async (data) => {

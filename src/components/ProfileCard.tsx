@@ -52,7 +52,7 @@ const ProfileCard = ({ uid }: { uid: string }) => {
         <div className="w-full md:w-40 rounded-xl overflow-hidden relative">
           <AspectRatio ratio={1 / 1}>
             <Image
-              src={profileData.photoUrl ? profileData.photoUrl : ""}
+              src={profileData.photoURL ? profileData.photoURL : ""}
               alt={profileData.name}
               fill
               sizes="(max-width: 768px) 100vw, (min-width: 768px) 40%"

@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { useAuth } from "./useAuth";
 import { UserData } from "@/types";
 import friendService from "@/firebase/friendService";
+import { useAppSelector } from "@/redux/store";
 
 export function useFriendRequest() {
-  const { userData } = useAuth();
+  const { userData } = useAppSelector((state) => state.authReducer);
   const [allUsers, setAllUsers] = useState<UserData[]>([]);
   const [sentFriendRequests, setSentFriendRequests] = useState<UserData[]>([]);
   const [receivedFriendRequests, setReceivedFriendRequests] = useState<
@@ -45,6 +45,11 @@ export function useFriendRequest() {
       getAllUsers();
     };
   }, [userData]);
-
-  return { loading, userData, allUsers, sentFriendRequests, receivedFriendRequests };
+  return {
+    loading,
+    userData,
+    allUsers,
+    sentFriendRequests,
+    receivedFriendRequests,
+  };
 }

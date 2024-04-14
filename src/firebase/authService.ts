@@ -65,7 +65,7 @@ export class AuthService {
         email,
         phoneNumber,
         gender,
-        photoUrl: downloadURL,
+        photoURL: downloadURL,
       });
     } catch (error: any) {
       throw error;

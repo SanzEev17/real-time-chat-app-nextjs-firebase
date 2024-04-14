@@ -1,7 +1,8 @@
 "use client";
 import { useAppSelector } from "@/redux/store";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
+
 export default function ProtectedLayout({
   children,
 }: Readonly<{
