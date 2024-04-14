@@ -26,14 +26,26 @@ const FriendCard = ({
   //* Check if the key of object i.e. uid is equal to the requestFriendData uid
   useEffect(() => {
     sentFriendRequests.map((friendRequest: UserData) => {
-      Object.keys(friendRequest)[0] === requestFriendData.uid &&
-        setIsRequestSent(true);
+      friendRequest.uid === requestFriendData.uid && setIsRequestSent(true);
     });
   }, [sentFriendRequests, requestFriendData.uid]);
 
   //* Handler to send friend request
   const addFriend = async () => {
-    await friendService.sendFriendRequest(currentUserId, requestFriendData.uid);
+    await friendService.sendFriendRequest({
+      senderId: currentUserId,
+      receiverId: requestFriendData.uid,
+    });
+    setIsRequestSent(true);
+  };
+
+  //* Handler to cancel or reject friend request
+  const deleteFriendRequest = async () => {
+    await friendService.deleteFriendRequest({
+      senderId: currentUserId,
+      receiverId: requestFriendData.uid,
+    });
+    setIsRequestSent(false);
   };
 
   return (
@@ -58,7 +70,9 @@ const FriendCard = ({
       </CardHeader>
       <CardFooter className="flex gap-3">
         {isRequestSent ? (
-          <Button variant="destructive">Cancel</Button>
+          <Button variant="destructive" onClick={deleteFriendRequest}>
+            Cancel
+          </Button>
         ) : (
           <Button onClick={addFriend}>Add Friend</Button>
         )}

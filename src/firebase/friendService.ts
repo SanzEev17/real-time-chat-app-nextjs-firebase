@@ -3,11 +3,13 @@ import {
   DocumentData,
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
   getFirestore,
   query,
+  setDoc,
   where,
 } from "firebase/firestore";
 import userService from "./userService";
@@ -26,7 +28,13 @@ export class FriendService {
     })) as UserData[];
   }
 
-  async sendFriendRequest(senderId: string, receiverId: string) {
+  async sendFriendRequest({
+    senderId,
+    receiverId,
+  }: {
+    senderId: string;
+    receiverId: string;
+  }) {
     try {
       const userData = (data: DocumentData) => {
         return {
@@ -41,26 +49,29 @@ export class FriendService {
       };
       await userService.getUserData(receiverId).then(async (data) => {
         if (data) {
-          await addDoc(
-            collection(this.db, "friendRequests", senderId, "sentRequests"),
-            {
-              [receiverId]: userData(data),
-            }
+          await setDoc(
+            doc(
+              this.db,
+              "friendRequests",
+              senderId,
+              "sentRequests",
+              receiverId
+            ),
+            userData(data)
           );
         }
       });
       await userService.getUserData(senderId).then(async (data) => {
         if (data) {
-          await addDoc(
-            collection(
+          await setDoc(
+            doc(
               this.db,
               "friendRequests",
               receiverId,
-              "receivedRequests"
+              "receivedRequests",
+              senderId
             ),
-            {
-              [senderId]: userData(data),
-            }
+            userData(data)
           );
         }
       });
@@ -68,6 +79,26 @@ export class FriendService {
       console.log(error);
     }
   }
+
+  async deleteFriendRequest({
+    senderId,
+    receiverId,
+  }: {
+    senderId: string;
+    receiverId: string;
+  }) {
+    try {
+      await deleteDoc(
+        doc(this.db, "friendRequests", senderId, "sentRequests", receiverId)
+      );
+      await deleteDoc(
+        doc(this.db, "friendRequests", receiverId, "receivedRequests", senderId)
+      );
+    } catch (error: any) {
+      console.log("Error deleting friend request", error);
+    }
+  }
+
   async sentRequests(senderId: string) {
     try {
       const collectionRef = collection(
@@ -80,7 +111,6 @@ export class FriendService {
       return collectionSnap.docs.map((data) => ({
         ...data.data(),
       })) as UserData[];
-      
     } catch (error: any) {
       console.log(error);
     }
