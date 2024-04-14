@@ -15,9 +15,9 @@ const ReceiverFriendRequestButton = ({
 
   //* Handler to send friend request
   const acceptFriendRequest = async () => {
-    await friendService.sendFriendRequest({
-      senderId: currentUserId,
-      receiverId: requestFriendData.uid,
+    await friendService.acceptFriendRequest({
+      acceptedOf: requestFriendData.uid,
+      acceptedBy: currentUserId,
     });
     setIsAccepted(true);
   };

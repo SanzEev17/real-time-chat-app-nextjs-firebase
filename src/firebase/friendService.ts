@@ -50,13 +50,7 @@ export class FriendService {
       await userService.getUserData(receiverId).then(async (data) => {
         if (data) {
           await setDoc(
-            doc(
-              this.db,
-              "friendRequests",
-              senderId,
-              "sentRequests",
-              receiverId
-            ),
+            doc(this.db, "friendData", senderId, "sentRequests", receiverId),
             userData(data)
           );
         }
@@ -66,7 +60,7 @@ export class FriendService {
           await setDoc(
             doc(
               this.db,
-              "friendRequests",
+              "friendData",
               receiverId,
               "receivedRequests",
               senderId
@@ -89,13 +83,50 @@ export class FriendService {
   }) {
     try {
       await deleteDoc(
-        doc(this.db, "friendRequests", senderId, "sentRequests", receiverId)
+        doc(this.db, "friendData", senderId, "sentRequests", receiverId)
       );
       await deleteDoc(
-        doc(this.db, "friendRequests", receiverId, "receivedRequests", senderId)
+        doc(this.db, "friendData", receiverId, "receivedRequests", senderId)
       );
     } catch (error: any) {
       console.log("Error deleting friend request", error);
+    }
+  }
+
+  async acceptFriendRequest({
+    acceptedOf,
+    acceptedBy,
+  }: {
+    acceptedOf: string;
+    acceptedBy: string;
+  }) {
+    try {
+      const createFriendDoc = async (friend1: string, friend2: string) => {
+        await userService.getUserData(acceptedOf).then(async (data) => {
+          if (data) {
+            await setDoc(
+              doc(this.db, "friendData", friend1, "friends", friend2),
+              {
+                uid: data.uid,
+                name: data.name,
+                username: data.username,
+                email: data.email,
+                phoneNumber: data.phoneNumber,
+                gender: data.gender,
+                photoURL: data.photoURL,
+              } as UserData
+            );
+          }
+        });
+      };
+      createFriendDoc(acceptedBy, acceptedOf);
+      createFriendDoc(acceptedOf, acceptedBy);
+      this.deleteFriendRequest({
+        senderId: acceptedOf,
+        receiverId: acceptedBy,
+      });
+    } catch (error: any) {
+      console.error("Failed to accept request", error);
     }
   }
 
@@ -103,7 +134,7 @@ export class FriendService {
     try {
       const collectionRef = collection(
         this.db,
-        "friendRequests",
+        "friendData",
         senderId,
         "sentRequests"
       );
@@ -119,7 +150,7 @@ export class FriendService {
     try {
       const collectionRef = collection(
         this.db,
-        "friendRequests",
+        "friendData",
         receiverId,
         "receivedRequests"
       );
@@ -131,20 +162,6 @@ export class FriendService {
       console.log(error);
     }
   }
-
-  // async getFriendsList(uid: string) {
-  //   try {
-  //     await userService.getUserData(uid).then((data) => {
-  //       if (data) {
-  //         const friendsList = data.friends.list;
-  //         return friendsList;
-  //       }
-  //     });
-  //   } catch (error: any) {
-  //     console.log("Error getting friends list:", error);
-  //     return [];
-  //   }
-  // }
 }
 
 const friendService = new FriendService();
