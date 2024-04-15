@@ -1,6 +1,6 @@
 "use client";
-import FriendCard from "@/components/FriendRequest/FriendCard";
-import { SenderFriendRequestButton as Button } from "@/components/FriendRequest/SenderFriendRequestButton";
+import FriendCard from "@/components/Friends/FriendCard";
+import { SenderFriendRequestButton as Button } from "@/components/Friends/SenderFriendRequestButton";
 import { useFriendRequest } from "@/hooks/useFriendRequest";
 import React from "react";
 

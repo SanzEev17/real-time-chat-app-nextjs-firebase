@@ -1,7 +1,7 @@
 import React from "react";
 import ChatList from "@/components/ChatList";
 import MessageContainer from "@/components/Messages/MessageContainer";
-import FriendList from "@/components/FriendList";
+import FriendList from "@/components/Friends/FriendList";
 
 const DashboardPage = () => {
   return (
