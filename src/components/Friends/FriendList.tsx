@@ -26,10 +26,11 @@ const FriendList = () => {
         <h1 className="text-3xl z-10 font-bold">Friends List</h1>
       </div>
       <ScrollArea className="px-3">
-        {allFriends ? (
+        {allFriends && userId ? (
           allFriends.map((friend) => (
             <FriendListCard
               key={friend.uid}
+              currentUser={userId}
               uid={friend.uid}
               name={friend.name}
               photoURL={friend.photoURL}

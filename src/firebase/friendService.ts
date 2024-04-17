@@ -9,9 +9,11 @@ import {
   query,
   setDoc,
   where,
+  writeBatch,
 } from "firebase/firestore";
 import userService from "./userService";
 import { UserData } from "@/types";
+import chatService from "./chatService";
 
 export class FriendService {
   db;
@@ -35,7 +37,6 @@ export class FriendService {
 
     return allUsersSnapshot.docs
       .filter((user) => {
-        
         //* Filter out if user is in friend's list
         return !allFriends.some((friend) => friend.uid === user.data().uid);
       })
@@ -63,28 +64,57 @@ export class FriendService {
           photoURL: data.photoURL,
         } as UserData;
       };
-      await userService.getUserData(receiverId).then(async (data) => {
-        if (data) {
-          await setDoc(
-            doc(this.db, "friendData", senderId, "sentRequests", receiverId),
-            userData(data)
-          );
-        }
-      });
-      await userService.getUserData(senderId).then(async (data) => {
-        if (data) {
-          await setDoc(
-            doc(
-              this.db,
-              "friendData",
-              receiverId,
-              "receivedRequests",
-              senderId
-            ),
-            userData(data)
-          );
-        }
-      });
+
+      const senderDataPromise = userService.getUserData(senderId);
+      const receiverDataPromise = userService.getUserData(receiverId);
+
+      const [senderData, receiverData] = await Promise.all([
+        senderDataPromise,
+        receiverDataPromise,
+      ]);
+      if (senderData && receiverData) {
+        const batch = writeBatch(this.db);
+        const senderDocRef = doc(
+          this.db,
+          "friendData",
+          senderId,
+          "sentRequests",
+          receiverId
+        );
+        const receiverDocRef = doc(
+          this.db,
+          "friendData",
+          receiverId,
+          "receivedRequests",
+          senderId
+        );
+        batch.set(senderDocRef, userData(receiverData));
+        batch.set(receiverDocRef, userData(senderData));
+
+        await batch.commit();
+      }
+      // await userService.getUserData(receiverId).then(async (data) => {
+      //   if (data) {
+      //     await setDoc(
+      //       doc(this.db, "friendData", senderId, "sentRequests", receiverId),
+      //       userData(data)
+      //     );
+      //   }
+      // });
+      // await userService.getUserData(senderId).then(async (data) => {
+      //   if (data) {
+      //     await setDoc(
+      //       doc(
+      //         this.db,
+      //         "friendData",
+      //         receiverId,
+      //         "receivedRequests",
+      //         senderId
+      //       ),
+      //       userData(data)
+      //     );
+      //   }
+      // });
     } catch (error: any) {
       console.log(error);
     }
@@ -117,29 +147,44 @@ export class FriendService {
     acceptedBy: string;
   }) {
     try {
-      const createFriendDoc = async (friend1: string, friend2: string) => {
-        await userService.getUserData(friend2).then(async (data) => {
-          if (data) {
-            await setDoc(
-              doc(this.db, "friendData", friend1, "friends", friend2),
-              {
-                uid: data.uid,
-                name: data.name,
-                username: data.username,
-                email: data.email,
-                phoneNumber: data.phoneNumber,
-                gender: data.gender,
-                photoURL: data.photoURL,
-              } as UserData
-            );
-          }
-        });
+      const batch = writeBatch(this.db);
+      //* Method to create document to store friend's data
+      const addFriendData = async (friend1: string, friend2: string) => {
+        const data = await userService.getUserData(friend2);
+        if (data) {
+          const userDocRef = doc(
+            this.db,
+            "friendData",
+            friend1,
+            "friends",
+            friend2
+          );
+          batch.set(userDocRef, {
+            uid: data.uid,
+            name: data.name,
+            username: data.username,
+            email: data.email,
+            phoneNumber: data.phoneNumber,
+            gender: data.gender,
+            photoURL: data.photoURL,
+          } as UserData);
+        }
       };
-      createFriendDoc(acceptedBy, acceptedOf);
-      createFriendDoc(acceptedOf, acceptedBy);
+      await Promise.all([
+        addFriendData(acceptedBy, acceptedOf),
+        addFriendData(acceptedOf, acceptedBy),
+      ]);
+
+      await batch.commit();
+
       this.deleteFriendRequest({
         senderId: acceptedOf,
         receiverId: acceptedBy,
+      });
+
+      await chatService.createUserChatData({
+        currentUser: acceptedBy,
+        friendUser: acceptedOf,
       });
     } catch (error: any) {
       console.error("Failed to accept request", error);
