@@ -11,6 +11,21 @@ const ChatList = () => {
   const userId = useAppSelector((state) => state.authReducer.userData?.uid);
   const [chatList, setChatList] = useState<ChatListItem[]>([]);
 
+  function sortByLatestTimestamp(chatA:ChatListItem, chatB:ChatListItem) {
+    // Get the latest timestamps from each chat
+    const latestTimestampA =
+      chatA.messages.length > 0
+        ? chatA.messages[chatA.messages.length - 1].timestamp
+        : 0;
+    const latestTimestampB =
+      chatB.messages.length > 0
+        ? chatB.messages[chatB.messages.length - 1].timestamp
+        : 0;
+
+    // Sort in descending order based on the latest timestamp
+    return latestTimestampB - latestTimestampA;
+  }
+
   useEffect(() => {
     const getChatList = async () => {
       if (!userId) return;
@@ -24,8 +39,9 @@ const ChatList = () => {
           return { friendData, ...chat };
         });
         const chatList = await Promise.all(allChats);
+        const sortedChatList = chatList.sort(sortByLatestTimestamp)
         //* Update the state with the latest chats when changes occur
-        setChatList(chatList);
+        setChatList(sortedChatList);
       });
     };
     const unsubscribe = getChatList();

@@ -11,9 +11,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem } from "../ui/form";
 
-interface FormInputType {
-  message: string;
-}
 
 const MessageFormInput = () => {
   const chatId = useAppSelector((state) => state.chatFriendReducer.chatId);

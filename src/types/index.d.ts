@@ -46,7 +46,7 @@ interface UserData extends AuthUserData {
 interface UserMessage {
   message: string;
   senderId: string;
-  timestamp: string;
+  timestamp: number;
   photoURL?: string;
 }
 
