@@ -1,27 +1,32 @@
 "use client";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import heroImg from "../../public/images/hero.jpg";
 import { ScrollArea } from "./ui/scroll-area";
 import { useAppSelector } from "@/redux/store";
 import chatService from "@/firebase/chatService";
 import userService from "@/firebase/userService";
-import { ChatListItem, UserData } from "@/types";
+import { ChatListItem } from "@/types";
+import ChatListCard from "./ChatListCard";
 
 const ChatList = () => {
   const userId = useAppSelector((state) => state.authReducer.userData?.uid);
   const [chatList, setChatList] = useState<ChatListItem[]>([]);
 
   useEffect(() => {
-    // Subscribe to real-time updates for chats associated with the current user
     const getChatList = async () => {
-      return (
-        userId &&
-        (await chatService.getChatList(userId, (userChats) => {
-          // Update the state with the latest chats when changes occur
-          setChatList(userChats);
-        }))
-      );
+      if (!userId) return;
+      return await chatService.getChatList(userId, async (userChats) => {
+        //* Map through each chat to fetch friend data
+        const allChats = userChats.map(async (chat) => {
+          const friendId = chat.participants.find(
+            (user: string) => user !== userId
+          );
+          const friendData = await userService.getUserData(friendId);
+          return { friendData, ...chat };
+        });
+        const chatList = await Promise.all(allChats);
+        //* Update the state with the latest chats when changes occur
+        setChatList(chatList);
+      });
     };
     const unsubscribe = getChatList();
 
@@ -38,36 +43,13 @@ const ChatList = () => {
       </div>
       <ScrollArea className="px-3">
         {chatList && chatList.length > 0 ? (
-          chatList.map(
-            (chatListData) =>
-              chatListData.messages.length > 0 && (
-                <div
-                  key={chatListData.chatId}
-                  className="px-3 py-2 flex items-center gap-4 rounded-md hover:bg-accent"
-                >
-                  <div className="relative rounded-full overflow-hidden min-w-11 min-h-11">
-                    <Image
-                      src={heroImg}
-                      alt=""
-                      fill
-                      quality={20}
-                      sizes="(max-width: 1200px) 50vw, 33vw"
-                      className=""
-                    />
-                  </div>
-                  <div>
-                    <h1 className="font-bold text-base">
-                      {chatListData.participants.find(
-                        (user) => user !== userId
-                      )}
-                    </h1>
-                    <p className="text-sm line-clamp-1">
-                      {chatListData.messages.slice(-1)[0].message}
-                    </p>
-                  </div>{" "}
-                </div>
-              )
-          )
+          chatList.map((chatListData) => (
+            // chatListData.messages.length > 0 &&
+            <ChatListCard
+              key={chatListData.chatId}
+              chatListData={chatListData}
+            />
+          ))
         ) : (
           <div className="px-3">No chats to show...</div>
         )}

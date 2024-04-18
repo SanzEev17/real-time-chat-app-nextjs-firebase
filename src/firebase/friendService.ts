@@ -93,28 +93,6 @@ export class FriendService {
 
         await batch.commit();
       }
-      // await userService.getUserData(receiverId).then(async (data) => {
-      //   if (data) {
-      //     await setDoc(
-      //       doc(this.db, "friendData", senderId, "sentRequests", receiverId),
-      //       userData(data)
-      //     );
-      //   }
-      // });
-      // await userService.getUserData(senderId).then(async (data) => {
-      //   if (data) {
-      //     await setDoc(
-      //       doc(
-      //         this.db,
-      //         "friendData",
-      //         receiverId,
-      //         "receivedRequests",
-      //         senderId
-      //       ),
-      //       userData(data)
-      //     );
-      //   }
-      // });
     } catch (error: any) {
       console.log(error);
     }

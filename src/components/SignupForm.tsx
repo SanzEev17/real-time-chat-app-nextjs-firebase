@@ -40,7 +40,7 @@ const SignupForm = () => {
       setLoading(true);
       await authService
         .createUserWithEmail(data)
-        .then(() => router.push("/dashboard"));
+        .then(() => router.push("/chats"));
     } catch (error: any) {
       setError(error.message);
     } finally {

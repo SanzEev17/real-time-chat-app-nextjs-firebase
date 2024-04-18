@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import MessageFormInput from "./MessageFormInput";
 import MessageBox from "./MessageBox";
 import MessageContainerHeader from "./MessageContainerHeader";

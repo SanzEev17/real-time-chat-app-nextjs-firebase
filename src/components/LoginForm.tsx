@@ -36,7 +36,7 @@ const LoginForm = () => {
       if (userSession) {
         const { uid, displayName, email, photoURL } = userSession.user;
         dispatch(login({ uid, username: displayName, email, photoURL }));
-        router.replace("/dashboard");
+        router.push("/chats");
       }
     } catch (error: any) {
       setError(error.message);

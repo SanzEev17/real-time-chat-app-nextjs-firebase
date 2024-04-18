@@ -47,13 +47,17 @@ interface UserMessage {
   message: string;
   senderId: string;
   timestamp: string;
-  photoURL: string;
+  photoURL?: string;
 }
 
-interface ChatListItem {
+interface ChatDataType {
   chatId: string;
   participants: string[];
   messages: UserMessage[];
+}
+
+interface ChatListItem extends ChatDataType {
+  friendData: UserData;
 }
 
 export {
@@ -64,5 +68,7 @@ export {
   FormSelectData,
   FormImageData,
   UserData,
+  UserMessage,
+  ChatDataType,
   ChatListItem,
 };

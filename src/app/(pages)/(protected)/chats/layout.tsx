@@ -1,16 +1,17 @@
 import React from "react";
 import ChatList from "@/components/ChatList";
-import MessageContainer from "@/components/Messages/MessageContainer";
 import FriendList from "@/components/Friends/FriendList";
 
-const DashboardPage = () => {
+export default function ProtectedLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <section className="h-full lg:grid lg:grid-cols-4 overflow-y-auto">
       <ChatList />
-      <MessageContainer/>
-      <FriendList/>
+      {children}
+      <FriendList />
     </section>
   );
-};
-
-export default DashboardPage;
+}
