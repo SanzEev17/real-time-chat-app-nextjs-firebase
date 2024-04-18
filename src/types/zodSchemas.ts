@@ -1,11 +1,7 @@
 import { z, ZodType } from "zod";
 import { LoginFormData, SignUpFormData } from ".";
 
-const ACCEPTED_IMAGE_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-];
+const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
 
 const loginForm: ZodType<LoginFormData> = z.object({
   email: z.string().email().toLowerCase(),
@@ -42,4 +38,8 @@ const signupForm: ZodType<SignUpFormData> = z
     path: ["confirmPassword"],
   });
 
-export { loginForm, signupForm };
+const messageSchema = z.object({
+  message: z.string().min(1),
+});
+
+export { loginForm, signupForm, messageSchema };

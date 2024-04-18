@@ -9,6 +9,9 @@ import {
   addDoc,
   doc,
   DocumentSnapshot,
+  updateDoc,
+  arrayUnion,
+  serverTimestamp,
 } from "firebase/firestore";
 
 export class ChatService {
@@ -71,6 +74,25 @@ export class ChatService {
     return await addDoc(chatRef, {
       messages: [],
       participants: [currentUser, friendUser],
+    });
+  }
+
+  async sendMessage({
+    chatId,
+    senderId,
+    message,
+  }: {
+    chatId: string;
+    senderId: string;
+    message: string;
+  }): Promise<void> {
+    const chatRef = doc(this.db, "chats", chatId);
+    return await updateDoc(chatRef, {
+      messages: arrayUnion({
+        message,
+        senderId,
+        timestamp: Date.now(),
+      }),
     });
   }
 }
