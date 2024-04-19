@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ScrollArea } from "../ui/scroll-area";
+import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 import MessageReceived from "./MessageReceived";
 import MessageSent from "./MessageSent";
 import { useAppSelector } from "@/redux/store";
@@ -18,7 +18,7 @@ const MessageBox = () => {
     if (!chatId) return;
     const getChat = async () => {
       return await chatService.getChatWithFriend({ chatId }, (chats) => {
-        chats && setChats(chats.messages);
+        chats && setChats(chats.messages.reverse());
       });
     };
     const unsubscribe = getChat();
@@ -30,18 +30,38 @@ const MessageBox = () => {
   }, [chatId]);
 
   return (
-    <ScrollArea className="p-4 h-full overflow-y-auto">
-      {chats?.map((messageData) => {
-        return messageData.senderId === friendData?.uid ? (
-          <MessageReceived
-            messageData={messageData}
-            friendPhotoURL={friendData.photoURL}
-          />
-        ) : (
-          <MessageSent messageData={messageData} />
-        );
-      })}
-    </ScrollArea>
+    <>
+      {/* <ScrollArea className="p-4 h-full overflow-y-auto">
+        <div className="h-full flex flex-col-reverse w-full p-4">
+          {chats?.map((messageData, index) => {
+            return messageData.senderId === friendData?.uid ? (
+              <MessageReceived
+                key={index}
+                messageData={messageData}
+                friendPhotoURL={friendData.photoURL}
+              />
+            ) : (
+              <MessageSent key={index} messageData={messageData} />
+            );
+          })}
+        </div>
+      </ScrollArea> */}
+      <div className="h-full w-full flex justify-end overflow-y-auto">
+          <div className="w-full flex flex-col-reverse p-4 overflow-y-auto">
+            {chats?.map((messageData, index) => {
+              return messageData.senderId === friendData?.uid ? (
+                <MessageReceived
+                  key={index}
+                  messageData={messageData}
+                  friendPhotoURL={friendData.photoURL}
+                />
+              ) : (
+                <MessageSent key={index} messageData={messageData} />
+              );
+            })}
+        </div>
+      </div>
+    </>
   );
 };
 

@@ -2,24 +2,36 @@ import {
   setChatId,
   setCurrentChatFriend,
 } from "@/redux/features/chatFriendSlice";
+import { useAppSelector } from "@/redux/store";
 import { ChatListItem } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 
 const ChatListCard = ({ chatListData }: { chatListData: ChatListItem }) => {
+  const [isActive, setIsActive] = useState(false);
   const dispatch = useDispatch();
+  const friendId = useAppSelector(
+    (state) => state.chatFriendReducer.friendData?.uid
+  );
+
+  useEffect(() => {
+    setIsActive(friendId === chatListData.friendData.uid);
+  }, [chatListData.friendData.uid, friendId]);
+
   const handleClick = () => {
     dispatch(setChatId(chatListData.chatId));
     dispatch(setCurrentChatFriend(chatListData.friendData));
   };
-
+  
   return (
     <Link
       href={`/chats/${chatListData.friendData.uid}`}
       onClick={handleClick}
-      className="px-3 py-2 flex items-center gap-4 rounded-md hover:bg-accent"
+      className={`${
+        isActive && "bg-accent"
+      } px-3 py-3 my-1 flex items-center gap-4 rounded-md hover:bg-accent`}
     >
       <div className="relative rounded-full overflow-hidden min-w-11 min-h-11">
         <Image
