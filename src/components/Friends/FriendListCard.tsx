@@ -15,7 +15,7 @@ const FriendListCard = ({
 }) => {
   return (
     <Link
-      href={`profile/${uid}`}
+      href={`/profile/${uid}`}
       className="px-3 py-2 flex items-center gap-4 rounded-md hover:bg-accent"
     >
       <div className="relative rounded-full overflow-hidden w-9 h-9">
