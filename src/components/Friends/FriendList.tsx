@@ -5,21 +5,29 @@ import FriendListCard from "./FriendListCard";
 import friendService from "@/firebase/friendService";
 import { useAppSelector } from "@/redux/store";
 import { UserData } from "@/types";
+import { useDispatch } from "react-redux";
+import { setAllFriendsList } from "@/redux/features/friendsSlice";
 
 const FriendList = () => {
+  const dispatch = useDispatch();
   const userId = useAppSelector((state) => state.authReducer.userData?.uid);
-  const [allFriends, setAllFriends] = useState<UserData[]>([]);
+  const allFriends = useAppSelector(
+    (state) => state.friendsReducer.allFriendsList
+  );
+
   useEffect(() => {
     const getAllFriends = async () => {
       return (
         userId &&
         (await friendService.getFriendsList(userId).then((data) => {
-          data && setAllFriends(data);
+          data && dispatch(setAllFriendsList(data));
         }))
       );
     };
     getAllFriends();
-  }, [userId]);
+  }, [userId, dispatch]);
+
+  
   return (
     <div className="lg:col-span-1 h-full flex flex-col gap-2 overflow-y-auto">
       <div className="px-6 py-3 shadow-lg">

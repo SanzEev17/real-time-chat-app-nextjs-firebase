@@ -21,9 +21,9 @@ export class FriendService {
     this.db = getFirestore(app);
   }
 
-  async getFriendsList(uid: string) {
+  async getFriendsList(userId: string) {
     const allFriendsSnap = await getDocs(
-      collection(this.db, "friendData", uid, "friends")
+      collection(this.db, "friendData", userId, "friends")
     );
     return allFriendsSnap.docs.map((data) => ({
       ...data.data(),
