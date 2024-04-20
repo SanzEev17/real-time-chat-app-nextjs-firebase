@@ -10,6 +10,7 @@ import ChatListCard from "./ChatListCard";
 const ChatList = () => {
   const userId = useAppSelector((state) => state.authReducer.userData?.uid);
   const [chatList, setChatList] = useState<ChatListItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
   function sortByLatestTimestamp(chatA: ChatListItem, chatB: ChatListItem) {
     //* Get the latest timestamps from each chat
@@ -42,6 +43,7 @@ const ChatList = () => {
         const sortedChatList = chatList.sort(sortByLatestTimestamp);
         //* Update the state with the latest chats when changes occur
         setChatList(sortedChatList);
+        setLoading(false);
       });
     };
     const unsubscribe = getChatList();
@@ -58,9 +60,10 @@ const ChatList = () => {
         <h1 className="text-3xl z-10 font-bold">Chats</h1>
       </div>
       <ScrollArea className="px-3">
-        {chatList && chatList.length > 0 ? (
+        {loading ? (
+          <div>Loading chats...</div>
+        ) : chatList && chatList.length > 0 ? (
           chatList.map((chatListData) => (
-            // chatListData.messages.length > 0 &&
             <ChatListCard
               key={chatListData.chatId}
               chatListData={chatListData}

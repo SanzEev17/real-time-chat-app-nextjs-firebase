@@ -36,7 +36,9 @@ const NavItems = () => {
               key={index}
               href={`/${item.slug}`}
               className={`${
-                pathname === `/${item.slug}` && "bg-accent"
+                (pathname === `/${item.slug}` ||
+                  pathname.startsWith(`/${item.slug}`)) &&
+                "bg-accent"
               } hover:bg-accent text-sm font-semibold px-3 py-1.5 rounded-md`}
             >
               {item.title}

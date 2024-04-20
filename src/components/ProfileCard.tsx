@@ -16,22 +16,6 @@ const ProfileCard = async ({ userId }: { userId: string }) => {
   const profileData = await userService.getUserData(userId);
   //TODO: Replace uid with username and make username unique
 
-  // useEffect(() => {
-  //   async function getUser() {
-  //     try {
-  //       setLoading(true);
-  //       const data = await userService.getUserData(userId);
-  //       data && setProfileData(data);
-  //     } catch (error) {
-  //       console.error("Error fetching blog post:", error);
-  //       setError("Failed to fetch blog post. Please try again later.");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-  //   getUser();
-  // }, [userId]);
-
   return (
     profileData && (
       <Card className="min-w-96">
