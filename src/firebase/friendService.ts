@@ -45,6 +45,37 @@ export class FriendService {
       })) as UserData[];
   }
 
+  async unfriend({
+    currentUser,
+    friendUser,
+  }: {
+    currentUser: string;
+    friendUser: string;
+  }) {
+    try {
+      const batch = writeBatch(this.db);
+      const currentUserDocRef = doc(
+        this.db,
+        "friendData",
+        currentUser,
+        "friends",
+        friendUser
+      );
+      const friendUserDocRef = doc(
+        this.db,
+        "friendData",
+        friendUser,
+        "friends",
+        currentUser
+      );
+      batch.delete(currentUserDocRef);
+      batch.delete(friendUserDocRef);
+      await batch.commit();
+    } catch (error: any) {
+      console.log("Failed to unfriend!", error);
+    }
+  }
+
   async sendFriendRequest({
     senderId,
     receiverId,
