@@ -1,5 +1,5 @@
 import { z, ZodType } from "zod";
-import { LoginFormData, SignUpFormData } from ".";
+import { LoginFormData, SignUpFormData, UserProfile } from ".";
 
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
 
@@ -38,8 +38,25 @@ const signupForm: ZodType<SignUpFormData> = z
     path: ["confirmPassword"],
   });
 
+const updateProfileSchema: ZodType<UserProfile> = z.object({
+  name: z.string().trim().min(4),
+  username: z.string().trim().min(4).toLowerCase(),
+  email: z.string().email().trim().toLowerCase(),
+  phoneNumber: z
+    .string()
+    .refine((value) => /^[+]{1}(?:[0-9-()/.]\s?){6,15}[0-9]{1}$/.test(value)),
+  gender: z.string().trim().toLowerCase(),
+  photoURL: z
+    .instanceof(File)
+    .refine((files) => files.size <= 10000000, `Max image size is 10MB.`)
+    .refine(
+      (files) => ACCEPTED_IMAGE_TYPES.includes(files.type),
+      ".jpg, .jpeg and .png files are accepted."
+    ).or(z.any()),
+});
+
 const messageSchema = z.object({
   message: z.string().min(1),
 });
 
-export { loginForm, signupForm, messageSchema };
+export { loginForm, signupForm, messageSchema, updateProfileSchema };

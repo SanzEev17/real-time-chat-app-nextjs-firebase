@@ -61,7 +61,7 @@ const MessageFormInput = () => {
                 <FormControl>
                   <Input
                     placeholder="Aa"
-                    className="rounded-full bg-accent"
+                    className="rounded-full bg-input"
                     {...field}
                   />
                 </FormControl>

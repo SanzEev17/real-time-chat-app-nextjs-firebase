@@ -13,7 +13,13 @@ import { AspectRatio } from "../ui/aspect-ratio";
 import { ImageUp } from "lucide-react";
 import Image from "next/image";
 
-const FormImage = ({ control, name, className, ...props }: FormImageData) => {
+const FormImage = ({
+  control,
+  name,
+  className,
+  photoURL,
+  ...props
+}: FormImageData) => {
   const [selectedImage, setSelectedImage] = useState<File>();
   const [imagePreview, setImagePreview] = useState<string | undefined>();
   useEffect(() => {
@@ -39,17 +45,13 @@ const FormImage = ({ control, name, className, ...props }: FormImageData) => {
               className={`border-2 w-36 h-auto rounded-xl overflow-hidden relative`}
             >
               <AspectRatio ratio={1 / 1}>
-                {imagePreview ? (
-                  <Image
-                    src={imagePreview}
-                    alt={name}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (min-width: 768px) 40%"
-                    quality={40}
-                  />
-                ) : (
-                  <ImageUp className="p-4 h-full w-full text-muted" />
-                )}
+                <Image
+                  src={imagePreview ? imagePreview : photoURL ? photoURL : ""}
+                  alt={name}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (min-width: 768px) 40%"
+                  quality={40}
+                />
               </AspectRatio>
             </div>
           </FormLabel>

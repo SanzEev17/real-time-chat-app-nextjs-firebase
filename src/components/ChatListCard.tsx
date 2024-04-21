@@ -1,6 +1,4 @@
-import {
-  setCurrentChatFriend,
-} from "@/redux/features/chatFriendSlice";
+import { setCurrentChatFriend } from "@/redux/features/chatFriendSlice";
 import { useAppSelector } from "@/redux/store";
 import { ChatListItem } from "@/types";
 import Image from "next/image";
@@ -23,6 +21,9 @@ const ChatListCard = ({ chatListData }: { chatListData: ChatListItem }) => {
     isActive && dispatch(setCurrentChatFriend(chatListData.friendData));
   }, [dispatch, isActive, chatListData.friendData]);
 
+  //* Gets the last sent message's data
+  const lastMessageData = chatListData.messages.slice(-1)[0];
+
   return (
     <Link
       href={`/chats/${chatListData.chatId}`}
@@ -42,9 +43,14 @@ const ChatListCard = ({ chatListData }: { chatListData: ChatListItem }) => {
       </div>
       <div>
         <h1 className="font-bold text-base">{chatListData.friendData.name}</h1>
-        <p className="text-sm line-clamp-1">
-          {chatListData.messages.length > 0 &&
-            chatListData.messages.slice(-1)[0].message}
+        <p className="text-sm line-clamp-1 text-muted-foreground font-semibold">
+          <span>
+            {lastMessageData.senderId !== chatListData.friendData.uid &&
+              "You: "}
+          </span>
+          <span>
+            {chatListData.messages.length > 0 && lastMessageData.message}
+          </span>
         </p>
       </div>
     </Link>

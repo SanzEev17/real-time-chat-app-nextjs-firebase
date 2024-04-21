@@ -29,7 +29,18 @@ interface FormInputData extends FormData {
 interface FormSelectData extends FormData {
   selectData: string[];
 }
-interface FormImageData extends FormData {}
+interface FormImageData extends FormData {
+  photoURL?: string;
+}
+
+interface UserProfile {
+  name: string;
+  username: string;
+  email: string;
+  phoneNumber: string;
+  gender: string;
+  photoURL?: File;
+}
 
 interface AuthUserData {
   uid: string;
@@ -71,4 +82,5 @@ export {
   UserMessage,
   ChatDataType,
   ChatListItem,
+  UserProfile,
 };

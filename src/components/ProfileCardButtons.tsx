@@ -2,6 +2,7 @@
 import React from "react";
 import { Button } from "./ui/button";
 import { useAppSelector } from "@/redux/store";
+import Link from "next/link";
 
 const ProfileCardButtons = ({ userId }: { userId: string }) => {
   const currentUserId = useAppSelector(
@@ -15,9 +16,11 @@ const ProfileCardButtons = ({ userId }: { userId: string }) => {
   );
 
   return currentUserId === userId ? (
-    <Button>Edit Profile</Button>
+    <Button asChild>
+      <Link href={`/profile/update/${currentUserId}`}>Edit Profile</Link>
+    </Button>
   ) : isFriend ? (
-      <Button variant="destructive">Unfriend</Button>
+    <Button variant="destructive">Unfriend</Button>
   ) : (
     <Button>Add Friend</Button>
   );
