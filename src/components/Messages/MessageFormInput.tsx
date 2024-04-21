@@ -11,11 +11,20 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem } from "../ui/form";
 
-
 const MessageFormInput = () => {
   const chatId = useAppSelector((state) => state.chatFriendReducer.chatId);
   const currentUserId = useAppSelector(
     (state) => state.authReducer.userData?.uid
+  );
+  const allFriends = useAppSelector(
+    (state) => state.friendsReducer.allFriendsList
+  );
+  const friendData = useAppSelector(
+    (state) => state.chatFriendReducer.friendData
+  );
+
+  const isFriend = allFriends.map((data) =>
+    friendData && data.uid === friendData.uid ? true : false
   );
 
   const messageForm = useForm<z.infer<typeof messageSchema>>({
@@ -39,7 +48,7 @@ const MessageFormInput = () => {
     );
   };
 
-  return (
+  return isFriend[0] ? (
     <Form {...messageForm}>
       <form
         onSubmit={messageForm.handleSubmit(onSubmit)}
@@ -79,6 +88,10 @@ const MessageFormInput = () => {
         </div>
       </form>
     </Form>
+  ) : (
+    <div className="py-2 text-center border-t-2 font-semibold text-muted-foreground">
+      This person is not your friend. You have to be friends to chat.
+    </div>
   );
 };
 

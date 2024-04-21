@@ -25,35 +25,39 @@ const ChatListCard = ({ chatListData }: { chatListData: ChatListItem }) => {
   const lastMessageData = chatListData.messages.slice(-1)[0];
 
   return (
-    <Link
-      href={`/chats/${chatListData.chatId}`}
-      className={`${
-        isActive && "bg-accent"
-      } px-3 py-3 my-1 flex items-center gap-4 rounded-md hover:bg-accent`}
-    >
-      <div className="relative rounded-full overflow-hidden min-w-11 min-h-11">
-        <Image
-          src={chatListData.friendData.photoURL}
-          alt={chatListData.friendData.name}
-          fill
-          quality={20}
-          sizes="(max-width: 1200px) 50vw, 33vw"
-          className=""
-        />
-      </div>
-      <div>
-        <h1 className="font-bold text-base">{chatListData.friendData.name}</h1>
-        <p className="text-sm line-clamp-1 text-muted-foreground font-semibold">
-          <span>
-            {lastMessageData.senderId !== chatListData.friendData.uid &&
-              "You: "}
-          </span>
-          <span>
-            {chatListData.messages.length > 0 && lastMessageData.message}
-          </span>
-        </p>
-      </div>
-    </Link>
+    chatListData.messages.length > 0 && (
+      <Link
+        href={`/chats/${chatListData.chatId}`}
+        className={`${
+          isActive && "bg-accent"
+        } px-3 py-3 my-1 flex items-center gap-4 rounded-md hover:bg-accent`}
+      >
+        <div className="relative rounded-full overflow-hidden min-w-11 min-h-11">
+          <Image
+            src={chatListData.friendData.photoURL}
+            alt={chatListData.friendData.name}
+            fill
+            quality={20}
+            sizes="(max-width: 1200px) 50vw, 33vw"
+            className=""
+          />
+        </div>
+        <div>
+          <h1 className="font-bold text-base">
+            {chatListData.friendData.name}
+          </h1>
+          <p className="text-sm line-clamp-1 text-muted-foreground font-semibold">
+            <span>
+              {lastMessageData.senderId !== chatListData.friendData.uid &&
+                "You: "}
+            </span>
+            <span>
+              {chatListData.messages.length > 0 && lastMessageData.message}
+            </span>
+          </p>
+        </div>
+      </Link>
+    )
   );
 };
 

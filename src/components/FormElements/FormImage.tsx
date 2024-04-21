@@ -45,13 +45,17 @@ const FormImage = ({
               className={`border-2 w-36 h-auto rounded-xl overflow-hidden relative`}
             >
               <AspectRatio ratio={1 / 1}>
-                <Image
-                  src={imagePreview ? imagePreview : photoURL ? photoURL : ""}
-                  alt={name}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (min-width: 768px) 40%"
-                  quality={40}
-                />
+                {imagePreview || photoURL ? (
+                  <Image
+                    src={imagePreview ? imagePreview : photoURL ? photoURL : ""}
+                    alt={name}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (min-width: 768px) 40%"
+                    quality={40}
+                  />
+                ) : (
+                  <ImageUp className="p-4 h-full w-full text-muted" />
+                )}
               </AspectRatio>
             </div>
           </FormLabel>
