@@ -11,10 +11,10 @@ import {
 } from "@/components/ui/card";
 import userService from "@/firebase/userService";
 import ProfileCardButtons from "./ProfileCardButtons";
+import Link from "next/link";
 
 const ProfileCard = async ({ userId }: { userId: string }) => {
   const profileData = await userService.getUserData(userId);
-  //TODO: Replace uid with username and make username unique
 
   return (
     profileData && (
@@ -37,13 +37,38 @@ const ProfileCard = async ({ userId }: { userId: string }) => {
               {profileData.name}
             </CardTitle>
             <CardDescription className="flex flex-col gap-1">
-              <span>Works in</span>
-              <span>Date of birth</span>
+              <span className="font-bold">{profileData.username}</span>
             </CardDescription>
           </div>
         </CardHeader>
         <CardContent>
-          <p>Bio</p>
+          <div className="font-semibold text-2xl border-b-2">About</div>
+          <div className="py-2 flex flex-col gap-1.5">
+            <div>
+              Email Address:&nbsp;
+              <Link
+                href={`mailto:${profileData.email}`}
+                className="font-semibold hover:text-primary cursor-pointer"
+              >
+                {profileData.email}
+              </Link>
+            </div>
+            <div>
+              Phone Number:&nbsp;
+              <Link
+                href={`tel:${profileData.phoneNumber}`}
+                className="font-semibold hover:text-primary cursor-pointer"
+              >
+                {profileData.phoneNumber}
+              </Link>
+            </div>
+            <div>
+              Gender:&nbsp;
+              <span className="font-semibold capitalize">
+                {profileData.gender}
+              </span>
+            </div>
+          </div>
         </CardContent>
         <CardFooter>
           <ProfileCardButtons userId={userId} />
