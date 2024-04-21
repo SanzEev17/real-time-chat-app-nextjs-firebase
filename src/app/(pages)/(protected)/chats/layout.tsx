@@ -1,5 +1,5 @@
 import React from "react";
-import ChatList from "@/components/ChatList";
+import ChatList from "@/components/ChatList/ChatList";
 import FriendList from "@/components/Friends/FriendList";
 
 export default function ProtectedLayout({
