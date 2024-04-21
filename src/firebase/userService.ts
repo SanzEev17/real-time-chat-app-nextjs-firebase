@@ -1,4 +1,4 @@
-import { UserProfile } from "@/types";
+import { UserData, UserProfile } from "@/types";
 import { app } from "./config";
 import { doc, getFirestore, getDoc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
@@ -19,7 +19,8 @@ export class UserService {
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        return docSnap.data();
+        const userData = docSnap.data()
+        return userData as UserData;
       }
     } catch (error: any) {
       console.log("Failed to get user data", error);

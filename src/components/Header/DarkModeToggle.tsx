@@ -7,11 +7,11 @@ import { Sun, Moon } from "lucide-react";
 export function DarkModeToggle() {
   const { theme, setTheme } = useTheme();
   return theme === "light" ? (
-    <Button variant="outline" size="icon" onClick={() => setTheme("dark")}>
+    <Button variant="ghost" size="icon" onClick={() => setTheme("dark")}>
       <Sun className="h-5 w-5 rotate-0" />
     </Button>
   ) : (
-    <Button variant="outline" size="icon" onClick={() => setTheme("light")}>
+    <Button variant="ghost" size="icon" onClick={() => setTheme("light")}>
       <Moon className="h-5 w-5" />
     </Button>
   );

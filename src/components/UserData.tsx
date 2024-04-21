@@ -1,5 +1,6 @@
 "use client";
 import authService from "@/firebase/authService";
+import userService from "@/firebase/userService";
 import { login, logout } from "@/redux/features/authSlice";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -17,8 +18,10 @@ const UserData = ({
     const getAuthState = async () => {
       return await authService.getCurrentUser(async (user) => {
         if (user) {
-          const { uid, displayName, email, photoURL} = user
-          dispatch(login({uid, username:displayName, email, photoURL}));
+          const userData = await userService.getUserData(user.uid);
+          if (userData) {
+            dispatch(login(userData));
+          }
         } else {
           dispatch(logout());
         }
