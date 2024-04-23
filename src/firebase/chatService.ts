@@ -12,12 +12,30 @@ import {
   updateDoc,
   arrayUnion,
   serverTimestamp,
+  getDocs,
+  or,
 } from "firebase/firestore";
 
 export class ChatService {
   db;
   constructor() {
     this.db = getFirestore(app);
+  }
+
+  async getChatId(participant1: string, participant2: string) {
+    let chatId = "";
+    const q = query(
+      collection(this.db, "chats"),
+      or(
+        where("participants", "==", [participant1, participant2]),
+        where("participants", "==", [participant2, participant1])
+      )
+    );
+    const chatIdSnapshot = await getDocs(q);
+    chatIdSnapshot.forEach((doc) => {
+      chatId = doc.id;
+    });
+    return chatId;
   }
 
   async getChatList(userId: string, callback: (chats: any[]) => void) {

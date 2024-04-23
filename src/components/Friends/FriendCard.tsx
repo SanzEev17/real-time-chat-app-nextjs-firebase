@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Card,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -36,7 +35,6 @@ const FriendCard = ({
           </Link>
         </div>
         <CardTitle className="pt-2 text-lg">{requestFriendData.name}</CardTitle>
-        <CardDescription>Some bio</CardDescription>
       </CardHeader>
       <CardFooter className="w-full flex gap-3">{children}</CardFooter>
     </Card>

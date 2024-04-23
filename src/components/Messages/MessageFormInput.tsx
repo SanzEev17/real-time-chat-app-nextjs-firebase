@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { SendHorizontal, Image as ImageIcon } from "lucide-react";
@@ -23,8 +23,8 @@ const MessageFormInput = () => {
     (state) => state.chatFriendReducer.friendData
   );
 
-  const isFriend = allFriends.map((data) =>
-    friendData && data.uid === friendData.uid ? true : false
+  const isFriend = !!allFriends.find(
+    (data) => friendData && data.uid === friendData.uid
   );
 
   const messageForm = useForm<z.infer<typeof messageSchema>>({
@@ -48,7 +48,7 @@ const MessageFormInput = () => {
     );
   };
 
-  return isFriend[0] ? (
+  return isFriend ? (
     <Form {...messageForm}>
       <form
         onSubmit={messageForm.handleSubmit(onSubmit)}

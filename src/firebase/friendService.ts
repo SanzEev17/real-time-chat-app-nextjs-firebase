@@ -156,6 +156,15 @@ export class FriendService {
     acceptedBy: string;
   }) {
     try {
+      let chatId = await chatService.getChatId(acceptedOf, acceptedBy);
+      if (!chatId) {
+        const chatData = await chatService.createUserChatData({
+          currentUser: acceptedBy,
+          friendUser: acceptedOf,
+        });
+        chatId = chatData.id;
+      }
+
       const batch = writeBatch(this.db);
       //* Method to create document to store friend's data
       const addFriendData = async (friend1: string, friend2: string) => {
@@ -170,6 +179,7 @@ export class FriendService {
           );
           batch.set(userDocRef, {
             uid: data.uid,
+            chatId: chatId,
             name: data.name,
             username: data.username,
             email: data.email,
@@ -189,11 +199,6 @@ export class FriendService {
       this.deleteFriendRequest({
         senderId: acceptedOf,
         receiverId: acceptedBy,
-      });
-
-      await chatService.createUserChatData({
-        currentUser: acceptedBy,
-        friendUser: acceptedOf,
       });
     } catch (error: any) {
       console.error("Failed to accept request", error);
