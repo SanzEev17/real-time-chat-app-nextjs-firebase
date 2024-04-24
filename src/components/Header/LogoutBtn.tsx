@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Button } from "../ui/button";
 import authService from "@/firebase/authService";
@@ -14,11 +15,15 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { LogOutIcon } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { logout } from "@/redux/features/authSlice";
 
 const LogoutBtn = () => {
+  const dispatch = useDispatch();
   const router = useRouter();
   const handleLogout = async (): Promise<void> => {
     await authService.logout().then(() => {
+      dispatch(logout());
       router.push("/");
     });
   };

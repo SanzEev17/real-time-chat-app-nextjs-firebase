@@ -12,6 +12,7 @@ import authService from "@/firebase/authService";
 import { useRouter } from "next/navigation";
 import { login } from "@/redux/features/authSlice";
 import { useDispatch } from "react-redux";
+import Link from "next/link";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -56,12 +57,20 @@ const LoginForm = () => {
           name="email"
           placeholder="Email Address"
         />
-        <FormInput
-          control={form.control}
-          name="password"
-          type="password"
-          placeholder="Password"
-        />
+        <div className="flex flex-col gap-1">
+          <FormInput
+            control={form.control}
+            name="password"
+            type="password"
+            placeholder="Password"
+          />
+          <Link
+            href="/account/forgotpassword"
+            className="text-sm text-primary hover:text-blue-600"
+          >
+            Forgot password?
+          </Link>
+        </div>
         <Button className="w-fit" type="submit">
           {loading ? "Loading..." : "Login"}
         </Button>

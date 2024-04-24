@@ -52,11 +52,40 @@ const updateProfileSchema: ZodType<UserProfile> = z.object({
     .refine(
       (files) => ACCEPTED_IMAGE_TYPES.includes(files.type),
       ".jpg, .jpeg and .png files are accepted."
-    ).or(z.any()),
+    )
+    .or(z.any()),
 });
 
 const messageSchema = z.object({
   message: z.string().min(1),
 });
 
-export { loginForm, signupForm, messageSchema, updateProfileSchema };
+const forgotPasswordSchema = z.object({
+  email: z.string().email().trim().toLowerCase(),
+});
+
+const changePasswordSchema = z
+  .object({
+    oldPassword: z.string().trim().min(8, {
+      message: "Password must be at least 8 characters.",
+    }),
+    password: z.string().trim().min(8, {
+      message: "Password must be at least 8 characters.",
+    }),
+    confirmPassword: z.string().trim().min(8, {
+      message: "Password must be at least 8 characters.",
+    }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
+export {
+  loginForm,
+  signupForm,
+  messageSchema,
+  updateProfileSchema,
+  forgotPasswordSchema,
+  changePasswordSchema,
+};

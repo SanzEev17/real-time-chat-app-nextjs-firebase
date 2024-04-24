@@ -7,6 +7,11 @@ import {
   onAuthStateChanged,
   User,
   updateProfile,
+  sendPasswordResetEmail,
+  sendEmailVerification,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
+  updatePassword,
 } from "firebase/auth";
 import { doc, getFirestore, setDoc, getDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
@@ -38,6 +43,7 @@ export class AuthService {
         email,
         password
       );
+      await sendEmailVerification(userData.user);
 
       //* Reference for storage in firestore
       const storageRef = ref(
@@ -58,7 +64,7 @@ export class AuthService {
       });
 
       //* Creates a document to store all info about user
-      setDoc(doc(this.db, "users", userData.user.uid), {
+      await setDoc(doc(this.db, "users", userData.user.uid), {
         uid: userData.user.uid,
         name,
         username,
@@ -95,7 +101,31 @@ export class AuthService {
     }
   }
 
-  
+  async forgotPassword({ email }: { email: string }) {
+    return await sendPasswordResetEmail(this.auth, email);
+  }
+
+  async changePassword({
+    oldPassword,
+    newPassword,
+  }: {
+    oldPassword: string;
+    newPassword: string;
+  }) {
+    try {
+      const user = this.auth.currentUser;
+      if (user && user.email) {
+        const credential = EmailAuthProvider.credential(
+          user.email,
+          oldPassword
+        );
+        const userCred = await reauthenticateWithCredential(user, credential);
+        return userCred && (await updatePassword(user, newPassword));
+      }
+    } catch (error: any) {
+      throw error;
+    }
+  }
 }
 
 const authService = new AuthService();

@@ -19,10 +19,9 @@ const NavItems = () => {
   const isAuthenticated = useAppSelector(
     (state) => state.authReducer.isAuthenticated
   );
-  const userId = useAppSelector((state) => state.authReducer.userData?.uid);
   const navItems = [
     { title: "Messages", slug: "chats" },
-    { title: "Friends", slug: `friends` },
+    { title: "Friends", slug: "friends" },
     { title: "Add Friends", slug: "friends/add" },
     { title: "Friend Requests", slug: "friends/requests" },
   ];
@@ -36,9 +35,7 @@ const NavItems = () => {
               key={index}
               href={`/${item.slug}`}
               className={`${
-                (pathname === `/${item.slug}` ||
-                  pathname.startsWith(`/${item.slug}`)) &&
-                "bg-accent"
+                pathname === `/${item.slug}` && "bg-accent"
               } hover:bg-accent text-sm font-semibold px-3 py-1.5 rounded-md`}
             >
               {item.title}
