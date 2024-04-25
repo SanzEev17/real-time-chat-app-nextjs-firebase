@@ -59,6 +59,7 @@ interface UserMessage {
   senderId: string;
   timestamp: number;
   photoURL?: string;
+  messageSeen: boolean;
 }
 
 interface ChatDataType {

@@ -11,9 +11,9 @@ import {
   DocumentSnapshot,
   updateDoc,
   arrayUnion,
-  serverTimestamp,
   getDocs,
   or,
+  getDoc,
 } from "firebase/firestore";
 
 export class ChatService {
@@ -110,8 +110,34 @@ export class ChatService {
         message,
         senderId,
         timestamp: Date.now(),
+        messageSeen: false,
       }),
     });
+  }
+
+  async setMessageSeen(chatId: string, senderId: string) {
+    try {
+      const chatDocRef = doc(this.db, "chats", chatId);
+      const chatDocSnapshot = await getDoc(chatDocRef);
+
+      if (chatDocSnapshot.exists()) {
+        const currentMessages = chatDocSnapshot.data()?.messages || [];
+
+        //* Update the messages array to set messageSeen to true for messages where it is false
+        const updatedMessages = currentMessages.map((message: any) => {
+          if (message.senderId === senderId && message.messageSeen === false) {
+            return { ...message, messageSeen: true };
+          }
+          return message;
+        });
+
+        await updateDoc(chatDocRef, { messages: updatedMessages });
+      } else {
+        console.log("Chat document does not exist.");
+      }
+    } catch (error) {
+      console.error("Error updating messageSeen:", error);
+    }
   }
 }
 

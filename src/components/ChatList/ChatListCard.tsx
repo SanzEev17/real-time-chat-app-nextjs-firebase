@@ -46,7 +46,14 @@ const ChatListCard = ({ chatListData }: { chatListData: ChatListItem }) => {
           <h1 className="font-bold text-base">
             {chatListData.friendData.name}
           </h1>
-          <p className="text-sm line-clamp-1 text-muted-foreground font-semibold">
+          <p
+            className={`${
+              lastMessageData.messageSeen ||
+              lastMessageData.senderId !== chatListData.friendData.uid
+                ? "text-muted-foreground font-semibold"
+                : "text-white font-bold"
+            } text-sm line-clamp-1`}
+          >
             <span>
               {lastMessageData.senderId !== chatListData.friendData.uid &&
                 "You: "}
