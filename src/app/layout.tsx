@@ -3,6 +3,7 @@ import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { ReduxProvider } from "@/redux/Provider";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import NextTopLoader from "nextjs-toploader";
 
 const fontFamily = Montserrat({ subsets: ["latin"] });
 
@@ -26,6 +27,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <NextTopLoader color="#B32914" showSpinner={false} />
             {children}
           </ThemeProvider>
         </ReduxProvider>
